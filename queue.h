@@ -28,6 +28,22 @@ void enqueue (queue* varq, int add_data);
 void dequeue (struct queue* varq);
 void peek (queue varq[]);
 
+struct queuec* create_queuec() {
+	struct queuec* varq = (struct queuec*)malloc(sizeof(struct queuec));
+	varq->front = -1;
+	varq->rear = -1;
+	varq->data = {};
+	return varq;
+}
+
+struct queuec* create_queuei() {
+	struct queuei* varq = (struct queuei*)malloc(sizeof(struct queuei));
+	varq->front = -1;
+	varq->rear = -1;
+	varq->data = {};
+	return varq;
+}
+
 bool isEmptyqueuec(struct queuec* varq){
 	return (varq->rear==-1);
 }
