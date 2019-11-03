@@ -1,0 +1,22 @@
+/******************************************************************************
+
+// Authors: Jose Sosa, Grace Torres, Jerel Navarrette
+// Project: Bang Board Game
+*******************************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+#include <malloc.h>
+#include <iostream>
+#include <string>
+#include <string.h>
+#include <bits/stdc++.h>
+
+int main()
+{
+    cout << "This is a test to see if this compiles" << endl;
+    cout << "Hey guys!!!";
+    
+    return 0;
+}
