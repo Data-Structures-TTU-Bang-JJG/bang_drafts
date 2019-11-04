@@ -22,11 +22,6 @@ typedef struct queuei{
 
 struct queuec* create_queuec();  //to create a queue in another function call using { struct queuec* [the name of your queue] = create_queuec }
 struct queuei* create_queuei();  //to create a queue in another function call using  { struct queuei* [the name of your queue] = create_queuei }
-bool isEmptyqueue(queue* varq);
-bool isFullqueue(queue* varq);
-void enqueue (queue* varq, int add_data);
-void dequeue (struct queue* varq);
-void peek (queue varq[]);
 
 struct queuec* create_queuec() {
 	struct queuec* varq = (struct queuec*)malloc(sizeof(struct queuec));
