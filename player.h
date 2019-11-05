@@ -4,7 +4,7 @@
 #include<time.h> 
 
 struct  player {
-	char name[20];
+	char* name;
 	int role;
 	int dice;
 	int hand_size;
@@ -30,7 +30,6 @@ struct player_queue* create_player_queue() {
 	varq->front = -1;
 	varq->rear = -1;
 	memset(varq->data, NULL, sizeof(varq->data));
-	free(varq);
 	return varq;
 }
 
@@ -122,6 +121,7 @@ struct player* create_player_node(){
 
 struct player* create_player(int char_num, int role_num) {
 	struct player *temp_player = (struct player*)malloc(sizeof(struct player*));
+	//temp_player->name=(char*)calloc(20,sizeof(char));
 	switch (char_num) {
 		case 1: {
 			strcpy(temp_player->name ,"Bart Cassidy" );
