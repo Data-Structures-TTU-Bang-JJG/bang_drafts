@@ -1,6 +1,8 @@
 // Grace Gomez
 // 11/3/2019
 
+#include<time.h> 
+
 struct  player {
 	char name[20];
 	int role;
@@ -10,7 +12,7 @@ struct  player {
 };
 
 // player queue
-typedef struct player_queue{
+struct player_queue{
     struct player* data[8]; //queue array
     int front;
     int rear;
@@ -27,7 +29,8 @@ struct player_queue* create_player_queue() {
 	struct player_queue* varq = (struct player_queue*)malloc(sizeof(struct player_queue*));
 	varq->front = -1;
 	varq->rear = -1;
-	varq->data = {};
+	memset(varq->data, NULL, sizeof(varq->data));
+	free(varq);
 	return varq;
 }
 
@@ -80,7 +83,7 @@ void dequeue_player (struct player_queue* varq) {
 }
 
 void peek_player (struct player_queue* varq) {
-    if( isEmpty_player_queue)
+    if( isEmpty_player_queue(varq))
         {
         cout <<"\n No One is Playing" <<endl;
         return;
@@ -92,92 +95,111 @@ void peek_player (struct player_queue* varq) {
         }
 }
 
-struct player_queue* create line_up() {
-	
+void shuffle_array(int* arr, int size) {
+	for (int a = 0; a<5; a++) {
+		for (int i = 0; i < size ; i++){
+			srand(time(0));
+			int var = rand()%size;
+			int temp = *(arr+i);
+			*(arr+i )= *(arr+var);
+			*(arr+var) = temp;
+		}
+	}
 }
 
-// role numbers. 1-> sheriff 2->deputy 3->outlaw 4->renegade
+/*
+struct player* create_player_node(){
+	malloc(sizeof(struct player*));
+	struct player *temp_player = (struct player*) malloc(sizeof(struct player));
+	for(int i=0;i<20;i++)
+		temp_player->name[i] = NULL;
+	temp_player->role=0;
+	temp_player->dice =0;
+	temp_player->hand_size =0;
+	temp_player->bullets =0;
+}
+*/
 
-struct player* create_player(int char_num int role_num) {
-	struct player* temp_player = (struct player*)malloc(sizeof(struct player));
-	switch (player_num) {
+struct player* create_player(int char_num, int role_num) {
+	struct player *temp_player = (struct player*)malloc(sizeof(struct player*));
+	switch (char_num) {
 		case 1: {
-			temp_player->name = "Bart Cassidy";
+			strcpy(temp_player->name ,"Bart Cassidy" );
 			temp_player->bullets = 4;
 			break;
 		}
 		case 2:{
-			temp_player->name = "Black Jack";
+			strcpy(temp_player->name,"Black Jack");
 			temp_player->bullets = 4;
 			break;
 		}
 		case 3:{
-			temp_player->name = "Calamity Janet";
+			strcpy(temp_player->name,"Calamity Janet");
 			temp_player->bullets = 4;
 			break;
 		}
 		case 4:{
-			temp_player->name = "El Gringo";
+			strcpy(temp_player->name , "El Gringo");
 			temp_player->bullets = 3;
 			break;
 		}
 		case 5:{
-			temp_player->name = "Jesse Jones";
+			strcpy(temp_player->name , "Jesse Jones");
 			temp_player->bullets = 4;
 			break;
 		}
 		case 6:{
-			temp_player->name = "Jourdonnais ";
+			strcpy(temp_player->name , "Jourdonnais ");
 			temp_player->bullets = 4;
 			break;
 		}
 		case 7:{
-			temp_player->name = "Pedro Ramirez";
+			strcpy(temp_player->name , "Pedro Ramirez");
 			temp_player->bullets = 4;
 			break;
 		}
 		case 8:{
-			temp_player->name = "Rose Doolan";
+			strcpy(temp_player->name , "Rose Doolan");
 			temp_player->bullets = 4;
 			break;
 		}
 		case 9:{
-			temp_player->name = "Sid Ketchum";
+			strcpy(temp_player->name, "Sid Ketchum");
 			temp_player->bullets = 4;
 			break;
 		}
 		case 10:{
-			temp_player->name = "Slab the Killer ";
+			strcpy(temp_player->name , "Slab the Killer ");
 			temp_player->bullets = 4;
 			break;
 		}
 		case 11:{
-			temp_player->name = "Suzy Lafayette";
+			strcpy(temp_player->name , "Suzy Lafayette");
 			temp_player->bullets = 4;
 			break;
 		}
 		case 12:{
-			temp_player->name = "Vulture Sam ";
+			strcpy(temp_player->name , "Vulture Sam ");
 			temp_player->bullets = 4;
 			break;
 		}
 		case 13:{
-			temp_player->name = "Willy the Kid";
+			strcpy(temp_player->name , "Willy the Kid");
 			temp_player->bullets = 4;
 			break;
 		}
 		case 14:{
-			temp_player->name = "Paul Regret";
+			strcpy(temp_player->name , "Paul Regret");
 			temp_player->bullets = 3;
 			break;
 		}
 		case 15:{
-			temp_player->name = "Lucky Duke";
+			strcpy(temp_player->name , "Lucky Duke");
 			temp_player->bullets = 4;
 			break;
 		}
 		case 16:{
-			temp_player->name = "Kit Carlson";
+			strcpy(temp_player->name , "Kit Carlson");
 			temp_player->bullets = 4;
 			break;
 		}
@@ -191,4 +213,46 @@ struct player* create_player(int char_num int role_num) {
 	return temp_player;
 }
 
-turn based on circular queue of type player;
+void print_player(struct player* var_player) {
+	cout << "Name: " << var_player->name;
+	cout << "Role: " <<  var_player->role;
+	cout << "Dice: " <<  var_player->dice;
+	cout << "Hand Size: " <<  var_player->hand_size;
+	cout << "Bullets: " <<  var_player->bullets;
+}
+
+void print_all_players(struct player_queue* line_up){
+	struct player_queue* temp = line_up;
+	while(!isEmpty_player_queue(temp)) {
+		print_player(temp->data[temp->front]);
+		dequeue_player(temp);
+	}
+}
+
+struct player_queue* create_line_up(int number_of_players) {
+	int char_num_arr[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+		shuffle_array(char_num_arr,16);
+	struct stack* roles_stack = create_stack();
+	for (int i = 0; i < (number_of_players/2); i ++) {
+		push(3, roles_stack);
+	}
+	push(4,roles_stack);
+	if (number_of_players == 8) {
+		push(4, roles_stack);
+	}
+	int deputy = ((number_of_players-3)/2);
+	for (int j = 0; j < deputy ; j++) {
+		push(2,roles_stack);
+	}
+	shuffle_array(roles_stack->data,number_of_players);
+	push(0, roles_stack); // sheriff must be the first element
+	struct player_queue* player_lineup = create_player_queue();
+	for( int k = 0; k < number_of_players; k++) {
+		enqueue_player(player_lineup,create_player(char_num_arr[k],pop(roles_stack)));
+		cout << "done";
+	}
+	print_all_players(player_lineup);
+	return player_lineup;
+}
+// role numbers. 1-> sheriff 2->deputy 3->outlaw 4->renegade
+//turn based on circular queue of type player;
