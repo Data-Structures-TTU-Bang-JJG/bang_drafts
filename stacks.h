@@ -44,7 +44,8 @@ int pop(struct stack* varst) {
 }
 
 struct stack* create_stack() {
-	struct stack* temp_stack = (struct stack*)malloc(sizeof(struct stack*));
+	struct stack base;
+	struct stack* temp_stack = &base; //= (struct stack*)malloc(sizeof(struct stack*));
 	temp_stack->top = 0;
 	memset(temp_stack->data, 0, sizeof(temp_stack->data));
 	return temp_stack;
