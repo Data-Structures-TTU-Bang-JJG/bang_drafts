@@ -4,19 +4,16 @@
 #include<time.h> 
 
 struct  player {
-	int name;
-	int role;
-	int dice;
-	int hand_size;
+	int name; // In the print function there is a switch case that prints there name based on this number 1 -16
+	int role; // 1 is Sherrif, 0 is Deputy, 3 is Outlaw, 4 is Renegade 
+	int dice; // This is rollable dice and is initalized as 5 at the beginning of each turn
+	int hand_size; // The largest number of bullets that an individual can have. Their starting number
 	int bullets; // life points. The amount you start the game with is your maximum hand size --> hand_size. cannot exceed at the end of the turn.
 	int arrows;
 	int beer; //delete
-	int next;
+	int next; // the next array element in the circular queue values between 0 and 7
 };
 
-//document one roll
-
-// player queue
 struct player_queue{
     struct player data[8]; //queue array
     int front;
@@ -135,8 +132,8 @@ struct player create_player(int char_num, int role_num) {
 		temp_player.bullets = 4;
 		
 		
-	if (role_num == 0) {
-		temp_player.bullets++;
+	if (role_num == 1) {
+		temp_player.bullets = temp_player.bullets + 2;
 	}
 	temp_player.role = role_num;
 	temp_player.dice = 6;
@@ -214,8 +211,8 @@ void print_player(struct player var_player) {
 			break;
 		}
 	}
-   if (var_player.role == 1)	cout << "\nSHERRIF";
-	if (var_player.dice) cout << "\nDice: ";// <<  var_player.dice;
+	if (var_player.role == 1)	cout << "\nSHERRIF";
+	if (var_player.dice) cout << "\nDice: "<<  var_player.dice;
 	if (var_player.hand_size)cout << "\nHand Size: " <<  var_player.hand_size;
 	if (var_player.bullets)cout << "\nBullets: " <<  var_player.bullets;
 }
