@@ -27,6 +27,11 @@ void enqueue_player (struct player_queue* varq, struct player);
 void dequeue_player (struct player_queue* varq);
 void peek_player (struct player_queue varq);
 
+// NAME : create_player_queue()
+// INPUT: none
+// OUTPUT: returns a struct
+// PURPOSE: 
+
 struct player_queue create_player_queue() {
 	struct player_queue varq;
 	varq.front = -1;
