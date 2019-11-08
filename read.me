@@ -6,7 +6,7 @@ gg - { the character cards will be assigned from a shuffled array to create char
 The character roles with be assigned to circular queue from a stack. the only element that is not is the sherrif and it will be assigned first.
 role numbers are:
   1 Sheriff
-  2 Deputy
+  0 Deputy
   3 Outlaw
   4 Renegades 
     In function comparesins for moves should be made using these numbers in the player struct }
@@ -14,3 +14,5 @@ role numbers are:
 gg - { For stacks I need pop to return an int please }
 
 gg - use a bin heap for the action choices
+
+gg - sides = the sum of all of the role numbers. if only good guys are left it will be = 0 but if there is any oposition then the game is still played.
