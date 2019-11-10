@@ -1,105 +1,184 @@
-struct stack dice(int current, int* dynimite, int* gatlin) ;
-struct stack* roll (struct player* var_player, int *gatlin, int *dynimite);
 
-void turn(int current){
-	int gatlin = 0;
-	int dynimite = 0;
-	bool gatlin_shot = 0;
-	bool sthes = 0;
-	lineup.data[current].dice = 5;
+struct stack dice_sheriff(int current, bool* gatlin, bool* dynamite, int* beer){
+	int rolled_dynamite_sheriff, rolled_gatlin_sheriff, reroll = 0;
 	
-	/*if (lineup.data[current].role == 0) { // deputy
-		savethesherrif();
-	}*/
-	struct player var_player;
-	struct stack shots = dice(current,&dynimite,&gatlin);
-	if (dynimite >= 3) return;
-}
-
-/*pop_all(){
-	
-}*/
-
-struct stack dice(int current, int* dynimite, int* gatlin) {
-	struct stack* dice_stack = create_stack();
-	int dice_roll, rolled_gatlin;
-	dice_stack = roll(&lineup.data[current],gatlin,dynimite);
-	
-	//What happens to gatlin dice
-	if (rolled_gatlin >= 3){
-		*gatlin = (1==1);
-		lineup.data[current].dice = lineup.data[current].dice -3;
-	}
-	else if (rolled_gatlin == 2) {
-		rolled_gatlin = 2;
-		lineup.data[current].dice = lineup.data[current].dice - 2;
-	}
-	
-	// Dynimite(
-	if (*dynimite >= 3){
-		lineup.data[current].bullets --;
-		return *dice_stack;
-	}
-	
-	if ((lineup.data[current].dice == 0) ) { // If there are no more rollable dice
-		return *dice_stack;
-	}
-	
-	else {
-		//pop_all();
-		dice_stack = roll(&lineup.data[current],gatlin,dynimite);
-	}
-	return *dice_stack;
-}
-
-struct stack* roll (struct player* var_player, int *gatlin, int *dynimite){
-	struct stack* dice_stack = create_stack();
-	// Don't change any bullets in this function because if there are 3 dynimite the action is null
-	
-	
-	//roll the number of avalible dice
-	for(int i=0;i<var_player->dice;i++) {
-		int dice_roll=rand()%6; // randomizes dice roll
-		
-		if (dice_roll == 0){ //dynimite  RULE
-			*dynimite++;
-			lineup.data[current].dice --;
-		}
-		
-		else if (dice_roll == 4){ //gatlin  
-			*gatlin++;
-		}
-		
-		else if (dice_roll == 5){ //arrows RULE
-			if (pull_arrows) {
-				indian_attack(line_up, line_up.front, line_up.front.next)
+	while ( roll_again && reroll < 3) {
+		struct stack* dice_stack_sheriff = create_stack();
+		for(int i=0;i<lineup.data[current].dice;i++) {
+			int dice_roll=rand()%6;
+			
+			if (dice_roll == 0){ // dynamite same for everyone
+				rolled_dynamite++;
+				lineup.data.[current].dice--;
+				if (rolled_dynamite >= 3) {
+					dynamite = ( 1 == 1);
+					return *dice_stack_sheriff;
+				}
 			}
-			else {
-				pop(arrows);
-				lineup.data[current].arrows++;
+			
+			if (dice_roll == 1 || dice_roll == 2) { // Shots
+				push(dice_roll, dice_stack)
+			}
+			
+			if (dice_roll == 3) { //Beer 
+				if (lineup.data[current].bullets != lineup.data[current].hand_size) {
+					*beer++;
+					lineup.data[current].dice--;
+				}
+			}
+			
+			if (dice_roll == 4) { //Gatlin
+					rolled_gatlin_sheriff++;
+				}
+			
+			if (dice_roll == 5) { //Arrow
+				if (pull_arrows) {
+					indian_attack(line_up, line_up.front, line_up.front.next)
+				}
+				else {
+					pop(arrows);
+					lineup.data[current].arrows++;
+				}
+			}
+			
+		}
+		if(rolled_gatlin >= 2 && lineup[current].dice >= 3) { // If they are close to or get a gatlin gun
+			if (rolled gatlin >= 3) {
+				*gatlin = ( 1 == 1);
+				lineup.data[current].dice = lineup.data[current].dice - 3;
 			}
 		}
+		else {
+			rolled_gatlin = 0;
+		}
 		
-		else if (dice == 3){ {// beer STRATEGY
-			if (lineup.data[current].role == 0)
-				savethesheriff(lineup.data[current],gatlin,dynimite);
-			else if (lineup.data[current].bullets < 4) 
-				var_player->beer++;
-				var_player->dice --;
+		reroll++;
+	}
+	return *dice_stack_sheriff;
+}
+
+struct stack dice_deputy(int current, bool* gatlin, bool* dynamite, int* beer){
+	int rolled_dynamite_deputy, rolled_gatlin_deputy;
+	
+	while ( roll_again && reroll < 4) {
+		struct stack* dice_stack_deputy = create_stack();
+		for(int i=0;i<lineup.data[current].dice;i++) {
+			int dice_roll=rand()%6;
+			
+			if (dice_roll == 0){ // dynamite
+				rolled_dynamite++;
+				lineup.data.[current].dice--;
+				if (rolled_dynamite_deputy >= 3) {
+					dynamite = ( 1 == 1);
+					return *dice_stack_deputy;
+				}
+			}
+			
+			if (dice_roll == 1 || dice_roll == 2) { // Shots
+				push(dice_roll, dice_stack)
+			}
+			
+			if (dice_roll == 3) { //Beer 
+				if (savethesheriff || lineup.data[current].bullets < 4) {
+					*beer++;
+					lineup.data[current].dice--;
+				}
+			}
+			
+			if (dice_roll == 4) { //Gatlin
+				if(!savethesheriff) {
+					rolled_gatlin_deputy++;
+				}
+			}
+			
+			if (dice_roll == 5) { //Arrow
+				if (pull_arrows) {
+					indian_attack(line_up, line_up.front, line_up.front.next)
+				}
+				else {
+					pop(arrows);
+					lineup.data[current].arrows++;
+				}
+			}
+			
+		}
+		if(rolled_gatlin >= 2 && lineup[current].dice >= 3) { // If they are close to or get a gatlin gun
+			if (rolled gatlin >= 3) {
+				*gatlin = ( 1 == 1);
+				lineup.data[current].dice = lineup.data[current].dice - 3;
 			}
 		}
-		
-		else { // shots
-			push(dice_roll, dice_stack);
+		else {
+			rolled_gatlin = 0;
 		}
+		
+		reroll++;
 	}
-	return dice_stack;
 }
 
-savethesheriff(){ // will return weither the sherif is in danger and tell the deputys what to do.
+struct stack dice_outlaw(int current, bool* gatlin, bool* dynamite, int* beer){
+	int rolled_dynamite_outlaw, rolled_gatlin_outlaw;
+	
+	while ( roll_again && reroll < 4) {
+		struct stack* dice_stack_outlaw = create_stack();
+		for(int i=0;i<lineup.data[current].dice;i++) {
+			int dice_roll=rand()%6;
+			
+			if (dice_roll == 0){ // dynamite
+				rolled_dynamite_outlaw++;
+				lineup.data.[current].dice--;
+				if (rolled_dynamite_outlaw >= 3) {
+					dynamite = ( 1 == 1);
+					return *dice_stack_outlaw;
+				}
+			}
+			
+			if (dice_roll == 1 || dice_roll == 2) { // Shots
+				push(dice_roll, dice_stack)
+			}
+			
+			if (dice_roll == 3) { //Beer 
+				if( (lineup.data[current].bullets + *beer) < (lineup.data[current].hand_size)) {
+					*beer++;
+					lineup.data[current].dice--;
+				}
+			}
+			
+			if (dice_roll == 4) { //Gatlin
+				rolled_gatlin_outlaw++;
+			}
+			
+			if (dice_roll == 5) { //Arrow
+				if (pull_arrows) {
+					indian_attack(line_up, line_up.front, line_up.front.next)
+				}
+				else {
+					pop(arrows);
+					lineup.data[current].arrows++;
+				}
+			}
+			
+		}
+		if(rolled_gatlin >= 2 && lineup[current].dice >= 3) { // If they are close to or get a gatlin gun
+			if (rolled gatlin >= 3) {
+				*gatlin = ( 1 == 1);
+				lineup.data[current].dice = lineup.data[current].dice - 3;
+			}
+		}
+		else {
+			rolled_gatlin = 0;
+		}
+		
+		reroll++;
+	}
 }
 
-bool pull_arrow(struct player* var_player) {
+bool save_the_sheriff() {
+	if (lineup.data[lineup.front].bullets < (lineup.data[lineup.front].hand_size/2));
+		return (1 == 1);
+}
+
+bool pull_arrow(int current) {
 	if (isEmpty(arrows)) {
 		fill_arrows();
 		return (1 == 1);
