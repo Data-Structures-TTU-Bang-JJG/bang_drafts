@@ -1,24 +1,29 @@
-struct stack dice(struct player* var_player);
+struct stack dice(int current, int* dynimite, int* gatlin) ;
 struct stack* roll (struct player* var_player, int *gatlin, int *dynimite);
 
 void turn(int current){
-	bool gatlin = 0;
+	int gatlin = 0;
 	int dynimite = 0;
+	bool gatlin_shot = 0;
 	bool sthes = 0;
 	lineup.data[current].dice = 5;
 	
-	if lineup[current].role == 0 { // deputy
+	/*if (lineup.data[current].role == 0) { // deputy
 		savethesherrif();
-	}
+	}*/
 	struct player var_player;
-	struct stack shots = dice(lineup,&dynimite,&gatlin,);
+	struct stack shots = dice(current,&dynimite,&gatlin);
 	if (dynimite >= 3) return;
 }
 
-struct stack dice(int current, int* dynimite, bool* gatlin, bool* sthes) {
+/*pop_all(){
+	
+}*/
+
+struct stack dice(int current, int* dynimite, int* gatlin) {
 	struct stack* dice_stack = create_stack();
-	int dice_roll, rolled_gatlin, dynimite;
-	dice_stack = roll(lineup.data[current],gatlin,dynimite);
+	int dice_roll, rolled_gatlin;
+	dice_stack = roll(&lineup.data[current],gatlin,dynimite);
 	
 	//What happens to gatlin dice
 	if (rolled_gatlin >= 3){
@@ -30,19 +35,19 @@ struct stack dice(int current, int* dynimite, bool* gatlin, bool* sthes) {
 		lineup.data[current].dice = lineup.data[current].dice - 2;
 	}
 	
-	// Dynimite
+	// Dynimite(
 	if (*dynimite >= 3){
-		var_player->bullets --;
+		lineup.data[current].bullets --;
 		return *dice_stack;
 	}
 	
-	// If there are no more rollable dice
-	if ((lineup.data[current].dice == 0) ) {
-		return *dice_stack
+	if ((lineup.data[current].dice == 0) ) { // If there are no more rollable dice
+		return *dice_stack;
 	}
 	
 	else {
-		dice_stack = roll(lineup.data[current],gatlin,dynimite);
+		//pop_all();
+		dice_stack = roll(&lineup.data[current],gatlin,dynimite);
 	}
 	return *dice_stack;
 }
@@ -61,11 +66,11 @@ struct stack* roll (struct player* var_player, int *gatlin, int *dynimite){
 			lineup.data[current].dice --;
 		}
 		
-		else if (dice_roll == 1){ //gatlin  
+		else if (dice_roll == 4){ //gatlin  
 			*gatlin++;
 		}
 		
-		else if (dice_roll == 2){ //arrows RULE
+		else if (dice_roll == 5){ //arrows RULE
 			if (pull_arrows) {
 				indian_attack(line_up, line_up.front, line_up.front.next)
 			}
@@ -75,15 +80,16 @@ struct stack* roll (struct player* var_player, int *gatlin, int *dynimite){
 			}
 		}
 		
-		else if (dice == 3){
+		else if (dice == 3){ {// beer STRATEGY
 			if (lineup.data[current].role == 0)
 				savethesheriff(lineup.data[current],gatlin,dynimite);
-			else if (lineup.data[current].bullets < 4) {// beer STRATEGY
+			else if (lineup.data[current].bullets < 4) 
 				var_player->beer++;
 				var_player->dice --;
 			}
 		}
-		else {
+		
+		else { // shots
 			push(dice_roll, dice_stack);
 		}
 	}
