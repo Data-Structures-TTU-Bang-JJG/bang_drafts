@@ -10,7 +10,6 @@ struct  player {
 	int hand_size; // The largest number of bullets that an individual can have. Their starting number
 	int bullets; // life points. The amount you start the game with is your maximum hand size --> hand_size. cannot exceed at the end of the turn.
 	int arrows;
-	int beer; //delete
 	int next; // the next array element in the circular queue values between 0 and 7
 };
 
@@ -20,17 +19,17 @@ struct player_queue{
     int rear;
 };
 
+// NAME : create_player_queue()
+// INPUT: none
+// OUTPUT: returns a struct
+// PURPOSE:
+
 struct player_queue create_player_queue();  //to create a queue in another function call using { struct queuec* [the name of your queue] = create_queuec }
 bool isEmpty_player_queue (struct player_queue varq);
 bool isFull_player_queue (struct player_queue varq);
 void enqueue_player (struct player_queue* varq, struct player);
 void dequeue_player (struct player_queue* varq);
 void peek_player (struct player_queue varq);
-
-// NAME : create_player_queue()
-// INPUT: none
-// OUTPUT: returns a struct
-// PURPOSE: 
 
 struct player_queue create_player_queue() {
 	struct player_queue varq;
@@ -112,19 +111,6 @@ void shuffle_array(int* arr, int size) {
 		}
 	}
 }
-
-/*
-struct player* create_player_node(){
-	malloc(sizeof(struct player*));
-	struct player *temp_player = (struct player*) malloc(sizeof(struct player));
-	for(int i=0;i<20;i++)
-		temp_player->name[i] = NULL;
-	temp_player->role=0;
-	temp_player->dice =0;
-	temp_player->hand_size =0;
-	temp_player->bullets =0;
-}
-*/
 
 struct player create_player(int char_num, int role_num) {
 	struct player temp_player;
