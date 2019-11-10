@@ -116,12 +116,15 @@ void fill_arrows(){
 	}
 }
 
-void indian_attack(struct player_queue line_up, int current, int start) {
+void indian_attack(int current, int start) {
 	for (int i = 0 ; i < line_up.data[current].arrows; i ++) {
-		var_player.bullets--;
+		lineup.data[current].bullets--;
+		if (lineup.data[current].bullets == 0) {
+			death(lineup.data[current]);
+		}
 	}
-	if (line_up.data[current].next == start) {
+	if (lineup.data[current].next == start) {
 		return;
 	}
-	indian_attack(line_up,line_up.data[current].next,start);
+	indian_attack(lineup.data[current].next,start);
 }
