@@ -9,18 +9,25 @@ void indian_attack(int current, int start);
 struct stack dice_sheriff(int current, bool* gatlin, bool* dynamite, int* beer){
 	int rolled_dynamite_sheriff, rolled_gatlin_sheriff, reroll = 0;
 	struct stack* dice_stack_sheriff = create_stack();
+	int roll_array[5], i=0;
 	
 	while ( (lineup.data[current].dice  > 0)  && reroll < 3) {
+		cout >> "Dice Roll -- ";
+		for (int j=0; j<i; j++) {
+			cout << "[" << roll_array[j] << "]\t";
+		}
 		while(!isEmpty(dice_stack_sheriff)) {
 			pop(dice_stack_sheriff);
 		}
 		
 		for(int i=0;i<lineup.data[current].dice;i++) {
 			int dice_roll=rand()%6;
+			cout << "[" << dice_roll << "]\t";
 			
 			if (dice_roll == 0){ // dynamite same for everyone
 				rolled_dynamite_sheriff++;
 				lineup.data[current].dice--;
+				roll_array[i] = 1;
 				if (rolled_dynamite_sheriff >= 3) {
 					*dynamite = ( 1 == 1);
 					return *dice_stack_sheriff;
