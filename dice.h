@@ -79,15 +79,20 @@ struct stack dice_sheriff(int current, bool* gatlin, bool* dynamite, int* beer){
 struct stack dice_deputy(int current, bool* gatlin, bool* dynamite, int* beer){
 	int rolled_dynamite_deputy, rolled_gatlin_deputy, reroll=0;
 	struct stack* dice_stack_deputy = create_stack();
+	int roll_array[5], i=0;
 	
 	while ( (lineup.data[current].dice  > 0) && reroll < 3) {
+		cout >> "Dice Roll -- ";
+		for (int j=0; j<i; j++) {
+			cout << "[" << roll_array[j] << "]\t";
+		}
 		while(!isEmpty(dice_stack_deputy)) {
 			pop(dice_stack_deputy);
 		}
 		
 		for(int i=0;i<lineup.data[current].dice;i++) {
 			int dice_roll=rand()%6;
-			
+			cout << "[" << dice_roll << "]\t";
 			if (dice_roll == 0){ // dynamite
 				rolled_dynamite_deputy++;
 				lineup.data[current].dice--;
@@ -143,14 +148,19 @@ struct stack dice_deputy(int current, bool* gatlin, bool* dynamite, int* beer){
 struct stack dice_outlaw(int current, bool* gatlin, bool* dynamite, int* beer){
 	int rolled_dynamite_outlaw, rolled_gatlin_outlaw, reroll = 0;
 	struct stack* dice_stack_outlaw = create_stack();
+	int roll_array[5], i=0;
 	
 	while ( (lineup.data[current].dice  > 0) && reroll < 3) {
+		cout >> "Dice Roll -- ";
+		for (int j=0; j<i; j++) {
+			cout << "[" << roll_array[j] << "]\t";
+		}
 		while(!isEmpty(dice_stack_outlaw)) {
 			pop(dice_stack_outlaw);
 		}
 		for(int i=0;i<lineup.data[current].dice;i++) {
 			int dice_roll=rand()%6;
-			
+			cout << "[" << dice_roll << "]\t";
 			if (dice_roll == 0){ // dynamite
 				rolled_dynamite_outlaw++;
 				lineup.data[current].dice--;
