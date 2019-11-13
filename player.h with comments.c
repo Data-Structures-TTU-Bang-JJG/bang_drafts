@@ -325,11 +325,11 @@ void print_recursive(struct player_queue line_up,int current, int first) {
 	print_recursive(line_up,line_up.data[current].next,first);
 }
 
-// 
+// Functions that creates the characters and assigns their roles
 struct player_queue create_line_up(int number_of_players) {
     
     // Create array that represents the characters that a player can be 
-	int char_num_arr[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}, k; // * * * * * what is 'k' * * * * 
+	int char_num_arr[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16}, k; 
 	
 	    // Call shuffle_array to shuffle the char_num_arr
 		shuffle_array(char_num_arr,16);
@@ -364,5 +364,6 @@ struct player_queue create_line_up(int number_of_players) {
 }
 // role numbers. 1-> sheriff 2->deputy 3->outlaw 4->renegade
 //turn based on circular queue of type player;
+
 
 
