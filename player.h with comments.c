@@ -12,6 +12,7 @@ struct  player {
 	int bullets;          // life points. The amount you start the game with is your maximum hand size --> hand_size. cannot exceed at the end of the turn.
 	int arrows;
 	int next;             // the next array element in the circular queue values between 0 and 7
+	int previous;
 };
 
 // Queue that tells who's turn it is, who is next, and who was the one before
@@ -357,8 +358,10 @@ struct player_queue create_line_up(int number_of_players) {
 		ptr_player_lineup->data[k] = create_player(char_num_arr[k],pop(roles_stack));
 		//enqueue_player(ptr_player_lineup,temp_player);
 		ptr_player_lineup->data[k].next = k+1;
+		ptr_player_lineup->data[k].previous = k-1;
 	}
 	player_lineup.rear = k-1;
+	player_lineup.data[player_lineup.front].previous = k-1;
 	player_lineup.data[player_lineup.rear].next = 0; 
 	return player_lineup;
 }
