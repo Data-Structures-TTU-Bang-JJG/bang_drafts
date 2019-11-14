@@ -13,6 +13,7 @@ struct  player {
 	int arrows;
 	int next;             // the next array element in the circular queue values between 0 and 7
 	int previous;
+	bool dead;
 };
 
 // Queue that tells who's turn it is, who is next, and who was the one before
