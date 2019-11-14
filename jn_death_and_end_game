@@ -1,21 +1,17 @@
-int death (player_lineup *q){
-	if (var_player.bullets == 0)
-		if (q->player_lineup.front == q->player_lineup.rear){
-			player_lineup.data = q->play_lineup.front->dat;
-			free(q-> play_lineup.front)
-			q->player_lineup.front=NULL;
-			q->player_lineup.rear=NULL;
-		}
-		else{
-			struct temp node *temp = q->player_lineup.front;
-			q->player_lineup.front=q->player_line.front->link;
-			q->player_lineup.rear->link=q->player_lineup.front;
-			free (temp);
-		}
-	return player_lineup.data
-}
+int death (int current){
+	if (lineup.data[current].bullets == 0)
+	
+		// makes it so that next and previous will skip the dead player 
+		lineup.data[lineup.data[current].next].previous == lineup.data[current].previous;
+		lineup.data[lineup.data[current].previous].next == lineup.data[current].next;
+		
+		//sets the player to dead
+		[lineup.data[current].dead = true;
+		
+		endgame(lineup.data[current].previous);
+}		
 
-struct endgame (player_lineup *){
+bool endgame (player_lineup *){
 	if(var_player.role=1 != player_lineup.front){
 		cout>>"The outlaws win!";
 	}
