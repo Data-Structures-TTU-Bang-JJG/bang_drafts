@@ -884,17 +884,17 @@ void shooting(struct stack dice_stack, int range, int current){
     return;
 } // End Shooting
 
-bool end_game(int current){
-	int living_status = renegade_Attitude(current, current, 0);
-	if(living_status == 1) {
-		cout << "Sheriff/Deputy wins";
-		exit(0);
+bool end_game(int current){  //begining of function to check to see if the game should end
+	int living_status = renegade_Attitude(current, current, 0);  //using renegade_Attitude to add role variables
+	if(living_status == 1) {  //checks the sum of the roles, since deputy=0 and sherriff=1 
+		cout << "Sheriff/Deputy wins";         //if the living_status=1 only the sherrif and deputy can be alive
+		exit(0);  
 	}
-	else if(lineup.data[current].role == 2 && lineup.data[current].next == current) {
+	else if(lineup.data[current].role == 2 && lineup.data[current].next == current) { //checks the list to see if list has only outlaws
 		cout << "Outlaws win";
 		exit(0);
 	}
-	else if(lineup.data[current].role == 3 && lineup.data[current].next == current) {
+	else if(lineup.data[current].role == 3 && lineup.data[current].next == current) { //checks the list to see if list has only renegades
 		cout << "Renegades win";
 		exit(0);
 	}
