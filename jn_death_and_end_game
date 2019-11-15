@@ -11,13 +11,15 @@ int death (int current){
 		endgame(lineup.data[current].previous);
 }		
 
-bool endgame (player_lineup *){
-	if(var_player.role=1 != player_lineup.front){
-		cout>>"The outlaws win!";
-	}
-	if(var_player.role=3 = player_lineup.front && player_lineup.rear){
-		cout>>"The renegades win!";
-	}
-	if(var_player.role=1 )
-}		
-
+bool end_game(lineup.front){
+	int living_status(current, current, 0)
+	if(living_status == 1)
+		cout>>"Sheriff/Deputy wins";
+		exit(0);
+	else if(lineup.data[current].role == 2, lineup.data[current].next == current)
+		cout>>"Outlaws win";
+		exit(0);
+	else if(lineup.data[current].role == 3, lineup.data[current].next == current)
+		cout>>"Renegades win";
+		exit(0);
+}	
