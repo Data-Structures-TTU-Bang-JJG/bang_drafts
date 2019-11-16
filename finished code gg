@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 {
 	srand(time(0));
 	int players = (rand()%5+4);
-	lineup = create_line_up(4);
+	lineup = create_line_up(players);
 	struct player_queue debugg = lineup;
 	arrows = create_stack();
 	print_recursive(lineup,lineup.front,lineup.front);
