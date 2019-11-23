@@ -1,12 +1,24 @@
 struct stack dice_sheriff(int current, bool* gatlin, bool* dynamite, int* beer);
+struct stack dice_sheriff_recursive(int current, bool* gatlin, bool* dynamite, int* beer, struct stack* sheriff_shot);
 struct stack dice_deputy(int current, bool* gatlin, bool* dynamite, int* beer);
+struct stack dice_deputy_recursive(int current, bool* gatlin, bool* dynamite, int* beer, struct stack* sheriff_shot);
 struct stack dice_outlaw(int current, bool* gatlin, bool* dynamite, int* beer);
+struct stack dice_outlaw_recursive(int current, bool* gatlin, bool* dynamite, int* beer, struct stack* sheriff_shot);
 bool save_the_sheriff();
 bool pull_arrow(int current);
 void fill_arrows();
 void indian_attack(int current, int start);
 
 struct stack dice_sheriff(int current, bool* gatlin, bool* dynamite, int* beer){
+	struct stack* sheriff_shot= create_stack();
+	struct stack final_shot = dice_sheriff_recursive(current, gatlin, dynamite, beer, sheriff_shot);
+	while(!isEmpty((sheriff_shot))) {
+		push(pop(sheriff_shot),&final_shot);
+	}
+	return final_shot;
+}
+
+struct stack dice_sheriff_recursive(int current, bool* gatlin, bool* dynamite, int* beer, struct stack* sheriff_shot){
 	int rolled_dynamite_sheriff, rolled_gatlin_sheriff, reroll = 0;
 	struct stack* dice_stack_sheriff = create_stack();
 	
@@ -27,8 +39,21 @@ struct stack dice_sheriff(int current, bool* gatlin, bool* dynamite, int* beer){
 				}
 			}
 			
-			else if (dice_roll == 1 || dice_roll == 2) { // Shots
-				push(dice_roll, dice_stack_sheriff);
+			if (dice_roll == 1 || dice_roll == 2) { // Shots
+				// if the sheriff is either two before or two next
+				if (dice_roll == 2 && ( (suspicion[lineup.data[lineup.data[current].next].next] < -3) || (suspicion[lineup.data[lineup.data[current].previous].previous] < -3) ) ) {
+					push(dice_roll, sheriff_shot);
+					lineup.data[current].dice--;
+				}
+				// if the next or previous is the sheriff
+				else if  (dice_roll == 1 && ( (suspicion[lineup.data[current].next]) < -3 || (suspicion[lineup.data[current].previous] < -3) ) ) {
+					push(dice_roll, sheriff_shot);
+					lineup.data[current].dice--;
+				}
+				
+				else {
+					push(dice_roll, dice_stack_sheriff);
+				}
 			}
 			
 			else if (dice_roll == 3) { //Beer 
@@ -70,6 +95,15 @@ struct stack dice_sheriff(int current, bool* gatlin, bool* dynamite, int* beer){
 }
 
 struct stack dice_deputy(int current, bool* gatlin, bool* dynamite, int* beer){
+	struct stack* sheriff_shot= create_stack();
+	struct stack final_shot = dice_deputy_recursive(current, gatlin, dynamite, beer, sheriff_shot);
+	while(!isEmpty((sheriff_shot))) {
+		push(pop(sheriff_shot),&final_shot);
+	}
+	return final_shot;
+}
+
+struct stack dice_deputy_recursive(int current, bool* gatlin, bool* dynamite, int* beer, struct stack* sheriff_shot){
 	int rolled_dynamite_deputy, rolled_gatlin_deputy, reroll=0;
 	struct stack* dice_stack_deputy = create_stack();
 	
@@ -91,7 +125,20 @@ struct stack dice_deputy(int current, bool* gatlin, bool* dynamite, int* beer){
 			}
 			
 			if (dice_roll == 1 || dice_roll == 2) { // Shots
-				push(dice_roll, dice_stack_deputy);
+				// if the sheriff is either two before or two next
+				if (dice_roll == 2 && ( (suspicion[lineup.data[lineup.data[current].next].next] < -3) || (suspicion[lineup.data[lineup.data[current].previous].previous] < -3) ) ) {
+					push(dice_roll, sheriff_shot);
+					lineup.data[current].dice--;
+				}
+				// if the next or previous is the sheriff
+				else if  (dice_roll == 1 && ( (suspicion[lineup.data[current].next]) < -3 || (suspicion[lineup.data[current].previous] < -3) ) ) {
+					push(dice_roll, sheriff_shot);
+					lineup.data[current].dice--;
+				}
+				
+				else {
+					push(dice_roll, dice_stack_deputy);
+				}
 			}
 			
 			if (dice_roll == 3) { //Beer 
@@ -134,6 +181,15 @@ struct stack dice_deputy(int current, bool* gatlin, bool* dynamite, int* beer){
 }
 
 struct stack dice_outlaw(int current, bool* gatlin, bool* dynamite, int* beer){
+	struct stack* sheriff_shot= create_stack();
+	struct stack final_shot = dice_outlaw_recursive(current, gatlin, dynamite, beer, sheriff_shot);
+	while(!isEmpty((sheriff_shot))) {
+		push(pop(sheriff_shot),&final_shot);
+	}
+	return final_shot;
+}
+	
+struct stack dice_outlaw_recursive(int current, bool* gatlin, bool* dynamite, int* beer, struct stack* sheriff_shot){
 	int rolled_dynamite_outlaw, rolled_gatlin_outlaw, reroll = 0;
 	struct stack* dice_stack_outlaw = create_stack();
 	
@@ -154,7 +210,20 @@ struct stack dice_outlaw(int current, bool* gatlin, bool* dynamite, int* beer){
 			}
 			
 			if (dice_roll == 1 || dice_roll == 2) { // Shots
-				push(dice_roll, dice_stack_outlaw);
+				// if the sheriff is either two before or two next
+				if (dice_roll == 2 && ( (suspicion[lineup.data[lineup.data[current].next].next] > 3) || (suspicion[lineup.data[lineup.data[current].previous].previous] > 3) ) ) {
+					push(dice_roll, sheriff_shot);
+					lineup.data[current].dice--;
+				}
+				// if the next or previous is the sheriff
+				else if  (dice_roll == 1 && ( (suspicion[lineup.data[current].next]) > 3 || (suspicion[lineup.data[current].previous] > 3) ) ) {
+					push(dice_roll, sheriff_shot);
+					lineup.data[current].dice--;
+				}
+				
+				else {
+					push(dice_roll, dice_stack_outlaw);
+				}
 			}
 			
 			if (dice_roll == 3) { //Beer 
