@@ -273,6 +273,13 @@ void turn(int current){
 			}
 			// Check if anyone is dead, and change that status if needed
 			check_Death(current, current,0);
+			// Check if only renegades and the sheriff are playing
+		  	while(bool clear_suspicion == false)
+		    	{
+		   		// If only renegades and sheriff are playing, clear the
+				// suspicion number of the renegades
+				clear_suspicion(current);
+		    	}
 			//Checking if any winning conditions have happened
 			 end_game(current);
 			
@@ -364,7 +371,13 @@ void turn(int current){
 				}
                 // Check if anyone is dead, and change that status if needed
                 check_Death(current, current,0);
-                
+                // Check if only renegades and the sheriff are playing
+		while(bool clear_suspicion == false)
+		{
+		    	// If only renegades and sheriff are playing, clear the
+			// suspicion number of the renegades
+		    	clear_suspicion(current);
+	        }
                 // Announce the turn has finished
                 cout << "\nThe turn has ended!!!";
             }
@@ -458,6 +471,13 @@ void turn(int current){
 				}
                 // Check if anyone is dead, and change that status if needed
                 check_Death(current, current,0);
+		// Check if only renegades and the sheriff are playing
+		while(bool clear_suspicion == false)
+	        {
+	         	// If only renegades and sheriff are playing, clear the
+			// suspicion number of the renegades
+		    	clear_suspicion(current);
+	        }
                 // Announce the turn has finished
                 cout << "\nThe turn has ended!!!";
             }
@@ -544,7 +564,13 @@ void turn(int current){
                     }
                     // Check if anyone is dead, and change that status if needed
                     check_Death(current, current,0);
-
+		    // Check if only renegades and the sheriff are playing
+		    while(bool clear_suspicion == false)
+		    {
+		    	// If only renegades and sheriff are playing, clear the
+			// suspicion number of the renegades
+		    	clear_suspicion(current);
+		    }
                     // Announce the turn has finished
                     cout << "\nThe turn has ended!!!" << endl;
                 }
@@ -633,7 +659,13 @@ void turn(int current){
 					}
 					// Check if anyone is dead, and change that status if needed
 					check_Death(current, current,0);
-					
+					// Check if only renegades and the sheriff are playing
+		                        while(bool clear_suspicion == false)
+		    			{
+		    				// If only renegades and sheriff are playing, clear the
+						// suspicion number of the renegades
+		    				clear_suspicion(current);
+		    			}
 					// Announce the turn has finished
 					cout << "\nThe turn has ended!!!";
 				}
