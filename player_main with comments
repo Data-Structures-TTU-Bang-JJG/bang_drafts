@@ -28,9 +28,11 @@ CLASS:
 #include <fstream> 
 #include <string.h>
 
-#define MAX 50
+#define MAX 20
 
 using namespace std;
+
+int suspicion[8];
 
 #include "stacks.h"
 //#include "queue.h"
@@ -105,7 +107,6 @@ int main(int argc, char **argv)
 	cout << "help";
 	return 0;
 }//End Main
-
 
 // Jose Sosa
 // 11/13/19
@@ -337,25 +338,28 @@ void turn(int current){
                         // Dispose of any arrows character has
                         lineup.data[current].arrows = 0;
                         cout << "\nYour arrows were dropped!!!" ;
-                        
-                        // Check if player has any beer that he kept
-                        if(beer == 0)
+					}
+					// Check if player has any beer that he kept
+                     if(beer == 0)
                         {
                             cout << "\nYou don't have any beer!!!" ;
                         }
                         
-                        else
-                        {
-                            // Else if player kept beer 
-                            for(int i = 0; i <= beer; i++)
-                            {
-                                // Increase their life by the number of beers they kept
-                                lineup.data[current].bullets++;
-                            }
-                            
-                            //Print it out
-                            cout << "\nYou have " << beer << " beers!!! Your life will increase by " << beer;
-                        }
+                     else
+                      {
+						while (lineup.data[0].bullets < (lineup.data[0].hand_size/2)) {
+							cout << "+1 bullet for the Sheriff\n";
+							lineup.data[current].bullets++;
+							beer--;
+							suspicion[current]++;
+						}
+						// Else if player kept beer 
+						for(int i = 0; i <= beer; i++)
+						{
+							// Increase their life by the number of beers they kept
+							lineup.data[current].bullets++;
+						}
+					}
                         
                         // Check if the dice stack is empty (to shoot player to the right or the left)
                         if(isEmpty(&dice_stack) == false)
@@ -369,12 +373,6 @@ void turn(int current){
                             // Else if no shooting happens, print it out
                             cout << "\nNo one was shot!!!";
                         }
-			
-                    }
-                    
-                    // If player did not get gatling gun
-                    else
-                    {
                         // Anounce if you have any arrows
                         if(lineup.data[current].arrows > 0)
                         {
@@ -386,40 +384,7 @@ void turn(int current){
                             // Else if you do not have any print it out
                             cout << "\nYou did not get any arrows this turn!!!";
                         }
-                        
-                        // Check if the dice stack is empty (to shoot player to the right or the left)
-                        if(isEmpty(&dice_stack) == false)
-                        {
-                            // Call shooting function
-                            shooting(dice_stack,pop(&dice_stack), current);
-                        }
-                        
-                        else
-                        {
-                            // Else if no shooting happens, print it out
-                            cout << "\nNo one was shot!!!";
-                        }
-                        
-                        // Check if player has any beer that he kept
-                        if(beer == 0)
-                        {
-                            cout << "\nYou don't have any beer!!!";
-                        }
-                        
-                        else
-                        {
-                            // Else if player kept beer 
-                            for(int i = 0; i <= beer; i++)
-                            {
-                                // Increase their life by the number of beers they kept
-                                lineup.data[current].bullets++;
-                            }
-                            
-                            //Print it out
-                            cout << "\nYou have " << beer << " beers!!! Your life will increase by " << beer;
-                        }
-                    }
-                }
+				}
                 // Check if anyone is dead, and change that status if needed
                 check_Death(current, current,0);
                 
@@ -463,89 +428,57 @@ void turn(int current){
                         // Dispose of any arrows character has
                         lineup.data[current].arrows = 0;
                         cout << "\nYour arrows were dropped!!!";
-                        
+						}
                         // Check if player has any beer that he kept
-                        if(beer == 0)
-                        {
-                            cout << "\nYou don't have any beer!!!";
-                        }
-                        
-                        else
-                        {
-                            // Else if player kept beer 
-                            for(int i = 0; i <= beer; i++)
-                            {
-                                // Increase their life by the number of beers they kept
-                                lineup.data[current].bullets++;
-                            }
-                            
-                            //Print it out
-                            cout << "\nYou have " << beer << " beers!!! Your life will increase by " << beer;
-                        }
-                        
-                        // Check if the dice stack is empty (to shoot player to the right or the left)
-                        if(isEmpty(&dice_stack) == false)
-                        {
-                            // Call shooting function
-                            shooting(dice_stack,pop(&dice_stack), current);
-                        }
-                        
-                        else
-                        {
-                            // Else if no shooting happens, print it out
-                            cout << "\nNo one was shot!!!";
-                        }
-			
-                    }
-                    
-                    // If player did not get gatling gun
-                    else
-                    {
-                        // Anounce if you have any arrows
-                        if(lineup.data[current].arrows > 0)
-                        {
-                            cout << "\nYou got " << lineup.data[current].arrows << " arrows!!!";
-                        }
-                        
-                        else
-                        {
-                            // Else if you do not have any print it out
-                            cout << "\nYou did not get any arrows this turn!!!";
-                        }
-                        
-                        // Check if the dice stack is empty (to shoot player to the right or the left)
-                        if(isEmpty(&dice_stack) == false)
-                        {
-                            // Call shooting function
-                            shooting(dice_stack,pop(&dice_stack), current);
-                        }
-                        
-                        else
-                        {
-                            // Else if no shooting happens, print it out
-                            cout << "\nNo one was shot!!!";
-                        }
-                        
-                        // Check if player has any beer that he kept
-                        if(beer == 0)
-                        {
-                            cout << "\nYou don't have any beer!!!";
-                        }
-                        
-                        else
-                        {
-                            // Else if player kept beer 
-                            for(int i = 0; i <= beer; i++)
-                            {
-                                // Increase their life by the number of beers they kept
-                                lineup.data[current].bullets++;
-                            }
-                            
-                            //Print it out
-                            cout << "\nYou have " << beer << " beers!!! Your life will increase by " << beer;
-                        }
-                    }
-                }
+					if(beer == 0)
+					{
+						cout << "\nYou don't have any beer!!!";
+					}
+					
+					else
+					{
+						// Else if player kept beer 
+						for(int i = 0; i <= beer; i++)
+						{
+							// Increase their life by the number of beers they kept
+							lineup.data[current].bullets++;
+						}
+						//Print it out
+						cout << "\nYou have " << beer << " beers!!! Your life will increase by " << beer;
+					}
+					
+					// Check if the dice stack is empty (to shoot player to the right or the left)
+					if(isEmpty(&dice_stack) == false)
+					{
+						// Call shooting function
+						shooting(dice_stack,pop(&dice_stack), current);
+					}
+					
+					else
+					{
+						// Else if no shooting happens, print it out
+						cout << "\nNo one was shot!!!";
+					}
+		
+				
+					// Anounce if you have any arrows
+					if(lineup.data[current].arrows > 0)
+					{
+						cout << "\nYou now have " << lineup.data[current].arrows << " arrows!!!";
+					}
+					
+					else
+					{
+						// Else if you do not have any print it out
+						cout << "\nYou did not get any arrows this turn!!!";
+					}
+					
+					// Check if player has any beer that he kept
+					if(beer == 0)
+					{
+						cout << "\nYou don't have any beer!!!";
+					}
+				}
                 // Check if anyone is dead, and change that status if needed
                 check_Death(current, current,0);
                 // Announce the turn has finished
@@ -591,11 +524,11 @@ void turn(int current){
                                 // Push arrow back into stack
                                 push(1, arrows);
                             }
-                    
+						
                             // Dispose of any arrows character has
                             lineup.data[current].arrows = 0;
                             cout << "\nYour arrows were dropped!!!";
-                        
+                        }
                             // Check if player has any beer that he kept
                             if(beer == 0)
                             {
@@ -627,55 +560,9 @@ void turn(int current){
                                 // Else if no shooting happens, print it out
                                 cout << "\nNo one was shot!!!";
                             }
-			
-                        }
-                    
-                        // If player did not get gatling gun
-                        else
-                        {
-                            // Anounce if you have any arrows
-                            if(lineup.data[current].arrows > 0)
-                            {
-                                cout << "\nYou got " << lineup.data[current].arrows << " arrows!!!";
-                            }
-                        
-                            else
-                            {
-                                // Else if you do not have any print it out
-                                cout << "\nYou did not get any arrows this turn!!!";
-                            }
-                        
-                          // Check if the dice stack is empty (to shoot player to the right or the left)
-                            if(isEmpty(&dice_stack) == false)
-                            {
-                                // Call shooting function
-                                shooting(dice_stack,pop(&dice_stack),current);
-                            }
-                        
-                            else
-                            {
-                                // Else if no shooting happens, print it out
-                                cout << "\nNo one was shot!!!";
-                            }
-                        
-                            // Check if player has any beer that he kept
-                            if(beer == 0)
-                          {
-                                cout << "\nYou don't have any beer!!!";
-                            }
-                        
-                            else
-                            {
-                                // Else if player kept beer 
-                                for(int i = 0; i <= beer; i++)
-                                {
-                                    // Increase their life by the number of beers they kept
-                                    lineup.data[current].bullets++;
-                                }
-                            
+                        // Prints the number of arrows the person has. 
+							cout << "\nYou got " << lineup.data[current].arrows << " arrows!!!";
                                 // Print it out
-                                cout << "\nYou have " << beer << " beers!!! Your life will increase by " << beer;
-                            }
                         }
                     }
                     // Check if anyone is dead, and change that status if needed
@@ -684,135 +571,97 @@ void turn(int current){
                     // Announce the turn has finished
                     cout << "\nThe turn has ended!!!" << endl;
                 }
-            }
             
             // Else the renegade will act as a deputy (Renegade must protect the sherriff)
-            else
-            {
-                // Call correct dice function according to the player's role
-                struct stack dice_stack = dice_deputy(current, &gatling, &dynamite, &beer);
-                {
-                    // Announce the results once all the dices had been rolled
-                    // If player got three dynamites
-                    if(dynamite == true)
-                    {
-                        // Reduce player's life by one
-                        lineup.data[current].bullets--;
-                        // Print it out
-                        cout << "\nYou rolled three dynamites!!! You lost one life point";
-                    }
-                
-                    else
-                    {
-                        // If player got three gatlin guns
-                        if(gatling == true)
-                        {
-                            // Call function to damage everyone (-1 health)
-                            damage_AllPlayers(lineup.data[current].next, current);
-                            cout << "\nYou rolled three Gatlin Guns!!! Shoot everyone once";
-                    
-                            // Push number of arrows players has back into the stack
-                            for(int i = 0; i <= lineup.data[current].arrows; i++)
-                            {
-                                // Push arrow back into stack
-                                push(1, arrows);
-                           }
-                    
-                           // Dispose of any arrows character has
-                            lineup.data[current].arrows = 0;
-                            cout << "\nYour arrows were dropped!!!";
-                        
-                            // Check if player has any beer that he kept
-                            if(beer == 0)
-                            {
-                                cout << "\nYou don't have any beer!!!";
-                            }
-                        
-                            else
-                            {
-                                // Else if player kept beer 
-                                for(int i = 0; i <= beer; i++)
-                                {
-                                    // Increase their life by the number of beers they kept
-                                    lineup.data[current].bullets++;
-                                }
-                            
-                                // Print it out
-                                cout << "\nYou have " << beer << " beers!!! Your life will increase by " << beer;
-                            }
-                        
-                            // Check if the dice stack is empty (to shoot player to the right or the left)
-                            if(isEmpty(&dice_stack) == false)
-                            {
-                                // Call shooting function
-                                shooting(dice_stack,pop(&dice_stack), current);
-                            }
-                        
-                            else
-                            {
-                                // Else if no shooting happens, print it out
-                                cout << "\nNo one was shot!!!";
-                            }
-			
-                        }
-                    
-                        // If player did not get gatling gun
-                        else
-                        {
-                            // Anounce if you have any arrows
-                            if(lineup.data[current].arrows > 0)
-                            {
-                                cout << "\nYou got " << lineup.data[current].arrows << " arrows!!!";
-                            }
-                        
-                            else
-                            {
-                                // Else if you do not have any print it out
-                                cout << "\nYou did not get any arrows this turn!!!";
-                            }
-                        
-                            // Check if the dice stack is empty (to shoot player to the right or the left)
-                            if(isEmpty(&dice_stack) == false)
-                            {
-                               // Call shooting function
-                                shooting(dice_stack,pop(&dice_stack), current);
-                            }
-                        
-                            else
-                            {
-                                // Else if no shooting happens, print it out
-                                cout << "\nNo one was shot!!!";
-                            }
-                        
-                            // Check if player has any beer that he kept
-                            if(beer == 0)
-                            {
-                                cout << "\nYou don't have any beer!!!";
-                            }
-                        
-                            else
-                            {
-                                // Else if player kept beer 
-                                for(int i = 0; i <= beer; i++)
-                                {
-                                    // Increase their life by the number of beers they kept
-                                    lineup.data[current].bullets++;
-                                }
-                            
-                                //Print it out
-                                cout << "\nYou have " << beer << " beers!!! Your life will increase by " << beer;
-                            }
-                        }
-                    }
-                    // Check if anyone is dead, and change that status if needed
-                    check_Death(current, current,0);
-
-                
-                    // Announce the turn has finished
-                    cout << "\nThe turn has ended!!!" << endl;
-                }
-           }
-        }
+			else
+			{
+				// Call correct dice function according to the player's role
+				struct stack dice_stack = dice_deputy(current, &gatling, &dynamite, &beer);
+				{
+					// Announce the results once all the dices had been rolled
+					// If player got three dynamites
+					if(dynamite == true)
+					{
+						// Reduce player's life by one
+						lineup.data[current].bullets--;
+						// Print it out
+						cout << "\nYou rolled three dynamites!!! You lost one life point";
+					}
+					
+					else
+					{
+						// If player got three gatlin guns
+						if(gatling == true)
+						{
+							// Call function to damage everyone (-1 health)
+							damage_AllPlayers(lineup.data[current].next, current);
+							cout << "\nYou rolled three Gatlin Guns!!! Shoot everyone once";
+						
+							// Push number of arrows players has back into the stack
+							for(int i = 0; i <= lineup.data[current].arrows; i++)
+							{
+								// Push arrow back into stack
+								push(1, arrows);
+							}
+						
+							// Dispose of any arrows character has
+							lineup.data[current].arrows = 0;
+							cout << "\nYour arrows were dropped!!!" ;
+						}
+						// Check if player has any beer that he kept
+						 if(beer == 0)
+							{
+								cout << "\nYou don't have any beer!!!" ;
+							}
+							
+						 else
+						  {
+							while (lineup.data[0].bullets < (lineup.data[0].hand_size/2)) {
+								cout << "+1 bullet for the Sheriff\n";
+								lineup.data[current].bullets++;
+								beer--;
+								suspicion[current]++;
+							}
+							// Else if player kept beer 
+							for(int i = 0; i <= beer; i++)
+							{
+								// Increase their life by the number of beers they kept
+								lineup.data[current].bullets++;
+							}
+						}
+							
+							// Check if the dice stack is empty (to shoot player to the right or the left)
+							if(isEmpty(&dice_stack) == false)
+							{
+								// Call shooting function
+								shooting(dice_stack,pop(&dice_stack), current);
+							}
+							
+							else
+							{
+								// Else if no shooting happens, print it out
+								cout << "\nNo one was shot!!!";
+							}
+							// Anounce if you have any arrows
+							if(lineup.data[current].arrows > 0)
+							{
+								cout << "\nYou got " << lineup.data[current].arrows << " arrows!!!" ;
+							}
+							
+							else
+							{
+								// Else if you do not have any print it out
+								cout << "\nYou did not get any arrows this turn!!!";
+							}
+					}
+					// Check if anyone is dead, and change that status if needed
+					check_Death(current, current,0);
+					
+					// Announce the turn has finished
+					cout << "\nThe turn has ended!!!";
+				}
+			}
+		}
     
 	end_game(current);
     // Point to the next player whose turn it is
@@ -830,6 +679,7 @@ void damage_AllPlayers(int current, int first){
     // If the next character is the first 
     if(lineup.data[current].next == first)
     {
+		suspicion[first] = suspicion[first] - 1;
         // Return
         return;
     }
@@ -845,10 +695,13 @@ int renegade_Attitude(int current, int first, int characterRoleSum){
     // The  value will be equal to the summation of the character's role so far 
 	struct player_queue temp = lineup;
 	
+	if (lineup.data[first].dead == true)
+		return 0;
+	
     characterRoleSum = lineup.data[current].role + characterRoleSum;
     
     // If the next character is the first 
-    if(lineup.data[current].next >= first || ((lineup.data[current].next == 0) && (characterRoleSum > 0) ) )
+    if(lineup.data[current].next == first)
     {
         // Return the summation of the character's role so far
         return characterRoleSum;
