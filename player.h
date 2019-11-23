@@ -23,7 +23,7 @@ struct player_queue{
     int rear;                 // Pointer to the ending of the queue array 
 };
 
-
+// * * * * * * Where is Max of array defined? * * * * * * * 
 struct player_queue create_player_queue();                         //to create a queue in another function call using { struct queuec* [the name of your queue] = create_queuec }
 bool isEmpty_player_queue (struct player_queue varq);              // Function that checks if the player_queue is empty
 bool isFull_player_queue (struct player_queue varq);               // Function that checks if the player_queue is full
@@ -344,11 +344,22 @@ struct player_queue create_line_up(int number_of_players) {
 	struct player_queue* ptr_player_lineup = &player_lineup;
 	for( k = 0; k < number_of_players; k++) {
 		ptr_player_lineup->data[k] = create_player(char_num_arr[k],character_roles[k]);
+		//enqueue_player(ptr_player_lineup,temp_player);
 		ptr_player_lineup->data[k].next = k+1;
 		ptr_player_lineup->data[k].previous = k-1;
 	}
 	player_lineup.rear = k-1;
 	player_lineup.data[player_lineup.front].previous = k-1;
 	player_lineup.data[player_lineup.rear].next = 0; 
+	
+	
+	// Adding elements to the suspicion array
+	suspicion[0] = 1000;
+	for( k = 1; k < number_of_players; k++) {
+		suspicion[k] = 0;
+	}
+	
 	return player_lineup;
 }
+// role numbers. 1-> sheriff 2->deputy 3->outlaw 4->renegade
+//turn based on circular queue of type player;
