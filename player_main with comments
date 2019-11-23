@@ -41,7 +41,7 @@ int suspicion[8];
 struct stack* arrows;
 struct player_queue lineup;
 
-#include "dice22.h"
+#include "dice.h"
 
 // Checks if anyone has reached health of 0 or less, changes their status to "dead" if true
 void check_Death(int current, int first);
