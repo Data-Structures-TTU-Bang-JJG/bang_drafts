@@ -59,6 +59,8 @@ int renegade_Attitude(int current, int first, int characterRole);
 void damage_AllPlayers(int current, int first);
 // Checks if any of the winning conditions has happened
 void turn(int current);
+void goodGuys_shooting(struct stack dice_stack, int range, int current);
+void badGuys_shooting(struct stack dice_stack, int range, int current);
 bool end_game(int current);
 
 /*{ Library functions table of content 
@@ -87,8 +89,8 @@ void indian_attack(int current, int start); )*/
 
 int main(int argc, char **argv)
 {
-	//freopen ("myfile.txt","w",stdout);
-	//printf ("This sentence is redirected to a file.");
+	freopen ("myfile.txt","w",stdout);
+	printf ("This sentence is redirected to a file.");
 	// Sets up the system that generates random numbers
 	srand(time(0));
 	// Randomizes the number of players from 4 to 8
@@ -211,87 +213,62 @@ void turn(int current){
 					// Dispose of any arrows character has
 					lineup.data[current].arrows = 0;
 					cout << "\nYour arrows were dropped!!!";
-					
-					// Check if player has any beer that he kept
-					if(beer == 0)
-					{
-						cout << "You don't have any beer!!!" << endl;
-					}
-					
-					else
-					{
-						// Else if player kept beer 
-						for(int i = 0; i <= beer; i++)
-						{
-							// Increase their life by the number of beers they kept
-							lineup.data[current].bullets++;
-						}
-						
-						//Print it out
-						cout << "\nYou have " << beer << " beers!!! Your life will increase by " << beer ;
-					}
-					
-					// Check if the dice stack is empty (to shoot player to the right or the left)
-					if(isEmpty(&dice_stack) == false)
-					{
-						// Call shooting function
-						shooting(dice_stack, pop(&dice_stack), current);
-					}
-					
-					else
-					{
-						// Else if no shooting happens, print it out
-						cout << "No one was shot!!!" << endl;
-					}
-		
 				}
-				
-				// If player did not get gatling gun
+				// Check if player has any beer that he kept
+				if(beer == 0)
+				{
+					cout << "You don't have any beer!!!" << endl;
+				}
+				//no beer
 				else
 				{
-					// Anounce if you have any arrows
-					if(lineup.data[current].arrows > 0)
+					// Else if player kept beer 
+					for(int i = 0; i <= beer; i++)
 					{
-						cout << "You got " << lineup.data[current].arrows << " arrows!!!" << endl;
+						// Increase their life by the number of beers they kept
+						lineup.data[current].bullets++;
 					}
 					
-					else
-					{
-						// Else if you do not have any print it out
-						cout << "You did not get any arrows this turn!!!" << endl;
-					}
-					
-					// Check if the dice stack is empty (to shoot player to the right or the left)
-					if(isEmpty(&dice_stack) == false)
-					{
-						// Call shooting function
-						shooting(dice_stack,pop(&dice_stack), current);
-					}
-					
-					else
-					{
-						// Else if no shooting happens, print it out
-						cout << "\nNo one was shot!!!";
-					}
-					
-					// Check if player has any beer that he kept
-					if(beer == 0)
-					{
-						cout << "\nYou don't have any beer!!!";
-					}
-					
-					else
-					{
-						// Else if player kept beer 
-						for(int i = 0; i <= beer; i++)
-						{
-							// Increase their life by the number of beers they kept
-							lineup.data[current].bullets++;
-						}
-						
-						//Print it out
-						cout << "\nYou have " << beer << " beers!!! Your life will increase by " << beer;
-					}
+					//Print it out
+					cout << "\nYou have " << beer << " beers!!! Your life will increase by " << beer ;
+				}
+				
+				// Check if the dice stack is empty (to shoot player to the right or the left)
+				if(isEmpty(&dice_stack) == false)
+				{
+					// Call shooting function
+					 goodGuys_shooting(dice_stack, pop(&dice_stack), current);
+				}
+				// no shooting
+				else
+				{
+					// Else if no shooting happens, print it out
+					cout << "No one was shot!!!" << endl;
+				}
+		
+				// Anounce if you have any arrows
+				if(lineup.data[current].arrows > 0)
+				{
+					cout << "You got " << lineup.data[current].arrows << " arrows!!!" << endl;
+				}
+				
+				else
+				{
+					// Else if you do not have any print it out
+					cout << "You did not get any arrows this turn!!!" << endl;
+				}
+				
+				// Check if the dice stack is empty (to shoot player to the right or the left)
+				if(isEmpty(&dice_stack) == false)
+				{
+					// Call shooting function
+					shooting(dice_stack,pop(&dice_stack), current);
+				}
+				
+				else
+				{
+					// Else if no shooting happens, print it out
+					cout << "\nNo one was shot!!!";
 				}
 			}
 			// Check if anyone is dead, and change that status if needed
@@ -365,7 +342,7 @@ void turn(int current){
                         if(isEmpty(&dice_stack) == false)
                         {
                             // Call shooting function
-                            shooting(dice_stack,pop(&dice_stack), current);
+                            goodGuys_shooting(dice_stack,pop(&dice_stack), current);
                         }
                         
                         else
@@ -451,7 +428,7 @@ void turn(int current){
 					if(isEmpty(&dice_stack) == false)
 					{
 						// Call shooting function
-						shooting(dice_stack,pop(&dice_stack), current);
+						badGuys_shooting(dice_stack,pop(&dice_stack), current);
 					}
 					
 					else
@@ -552,7 +529,7 @@ void turn(int current){
                             if(isEmpty(&dice_stack) == false)
                             {
                                 // Call shooting function
-                                shooting(dice_stack,pop(&dice_stack), current);
+                                badGuys_shooting(dice_stack,pop(&dice_stack), current);
                             }
                         
                             else
@@ -634,7 +611,7 @@ void turn(int current){
 							if(isEmpty(&dice_stack) == false)
 							{
 								// Call shooting function
-								shooting(dice_stack,pop(&dice_stack), current);
+								goodGuys_shooting(dice_stack,pop(&dice_stack), current);
 							}
 							
 							else
@@ -736,6 +713,123 @@ void check_Death(int current, int first, int count){
 }  // End check_Death
 
 
+// Function used by the "good guys" to "shoot" the "bad guys" within the range specified by the dices
+void goodGuys_shooting(struct stack dice_stack, int range, int current){
+    while(isEmpty(&dice_stack) == false)
+    {
+        // Check what is the range
+        // If range of shooting is 1
+        if(range == 1)
+        {
+            
+            // If the suspicion of the player on the left is lower than the one 
+            // on the right
+            if(suspicion[lineup.data[current].next] < suspicion[lineup.data[current].previous])
+            {
+                // Shoot the player to the left (-1 health)
+                lineup.data[lineup.data[current].next].bullets--; 
+                cout << "The player to the left was shot!!!" << endl;
+            }
+            
+            // Else if the suspicion of the player on the right is lower than 
+            // the one on the left
+            else if(suspicion[lineup.data[current].next] >= suspicion[lineup.data[current].previous])
+            {
+                // Shoot the player to the right (-1 health)
+                lineup.data[lineup.data[current].previous].bullets--;
+                cout << "The player to the right was shot!!!" << endl;
+            }
+        }
+        
+        // If range of shooting is 2
+        if(range == 2)
+        {
+            // If the suspicion of the player two spaces to the left is lower than
+            // the one two spaces to the right
+            if(suspicion[lineup.data[lineup.data[current].next].next] < suspicion[lineup.data[lineup.data[current].previous].previous])
+            {
+                // Shoot the player two positions to the left (-1 health)
+                lineup.data[lineup.data[lineup.data[current].next].next].bullets--;
+                cout << "The player two positions to the left was shot!!!" << endl;
+            }
+            
+            // If the suspicion of the player two spaces to the right is lower than
+            // the one two spaces to the left
+            else if(suspicion[lineup.data[lineup.data[current].next].next] >= suspicion[lineup.data[lineup.data[current].previous].previous])
+            {
+                // Shoot the player two positions to the right (-1 health)
+                lineup.data[lineup.data[lineup.data[current].previous].previous].bullets--;
+                cout << "The player two positions to the right was shot !!!" << endl;
+            }
+        }
+        
+		check_Death(lineup.data[current].next,current,0);
+        // Call this function recursively
+        goodGuys_shooting(dice_stack,pop(&dice_stack), current);
+    }
+    
+    // If the stack is empty then return
+    return;
+} // End Shooting
+
+// Function used by the "bad guys" to "shoot" the "good guys" within the range specified by the dices
+void badGuys_shooting(struct stack dice_stack, int range, int current){
+    while(isEmpty(&dice_stack) == false)
+    {
+        // Check what is the range
+        // If range of shooting is 1
+        if(range == 1)
+        {
+            
+            // If the suspicion of the player on the left is higher than the one 
+            // on the right
+            if(suspicion[lineup.data[current].next] > suspicion[lineup.data[current].previous])
+            {
+                // Shoot the player to the left (-1 health)
+                lineup.data[lineup.data[current].next].bullets--; 
+                cout << "The player to the left was shot!!!" << endl;
+            }
+            
+            // Else if the suspicion of the player on the right is higher than 
+            // the one on the left
+            else if(suspicion[lineup.data[current].next] <= suspicion[lineup.data[current].previous])
+            {
+                // Shoot the player to the right (-1 health)
+                lineup.data[lineup.data[current].previous].bullets--;
+                cout << "The player to the right was shot!!!" << endl;
+            }
+        }
+        
+        // If range of shooting is 2
+        if(range == 2)
+        {
+            // If the suspicion of the player two spaces to the left is higher than
+            // the one two spaces to the right
+            if(suspicion[lineup.data[lineup.data[current].next].next] > suspicion[lineup.data[lineup.data[current].previous].previous])
+            {
+                // Shoot the player two positions to the left (-1 health)
+                lineup.data[lineup.data[lineup.data[current].next].next].bullets--;
+                cout << "The player two positions to the left was shot!!!" << endl;
+            }
+            
+            // If the suspicion of the player two spaces to the right is higher than
+            // the one two spaces to the left
+            else if(suspicion[lineup.data[lineup.data[current].next].next] <= suspicion[lineup.data[lineup.data[current].previous].previous])
+            {
+                // Shoot the player two positions to the right (-1 health)
+                lineup.data[lineup.data[lineup.data[current].previous].previous].bullets--;
+                cout << "The player two positions to the right was shot !!!" << endl;
+            }
+        }
+        check_Death(lineup.data[current].next,current,0);
+        // Call this function recursively
+        badGuys_shooting(dice_stack,pop(&dice_stack), current);
+    }
+    
+    // If the stack is empty then return
+    return;
+} // End Shooting
+
 // Function to "shoot" the players within the range specified by the dices
 void shooting(struct stack dice_stack, int range, int current){
     while(isEmpty(&dice_stack) == false)
@@ -812,7 +906,7 @@ bool end_game(int current){
 		exit(0);
 	}
 	// If the current player is an outlaw, and the current player is the only player left
-	else if(lineup.data[current].role == 2 && lineup.data[current].next == current) {
+	else if(lineup.data[current].role == 2 && lineup.data[current].next == current &&  (living_status <= 0))  {
 		 // Print out that the outlaws have won
 		cout << "Outlaws win\n\n";
 		fclose (stdout);
