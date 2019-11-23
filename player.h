@@ -30,6 +30,7 @@ bool isFull_player_queue (struct player_queue varq);               // Function t
 void enqueue_player (struct player_queue* varq, struct player);    // Function that adds a player to the player_queue
 void dequeue_player (struct player_queue* varq);                   // Function that deletes a player from the player_queue
 void print_player_name(int name_num);                              // Prints just the name of a player
+bool clear_suspicion(int current);                                 // Checks if only renegades playing, and clears suspicion of every player
 
 
 // Function to create and initialize the player_queue (varq)
@@ -360,6 +361,40 @@ struct player_queue create_line_up(int number_of_players) {
 	}
 	
 	return player_lineup;
+}
+
+int renegade_Status = renegade_Attitude(current, current, 0);
+// Function that traverses the current circular player queue and adds up all the 
+// character's role. This is to check if the sherriff is the only player alive
+int renegade_Attitude(int current, int first, int characterRoleSum){
+    // The  value will be equal to the summation of the character's role so far 
+	struct player_queue temp = lineup;
+	
+	if (lineup.data[first].dead == true)
+		return 0;
+	
+    characterRoleSum = lineup.data[current].role + characterRoleSum;
+    
+    // If the next character is the first 
+    if(lineup.data[current].next == first)
+    {
+        // Return the summation of the character's role so far
+        return characterRoleSum;
+    }
+    
+    // Call this function recursively by pointing to the next character
+    renegade_Attitude(lineup.data[current].next, first, characterRoleSum);
+} // End renegade_Attitude
+
+//Check to see if reegades have switched from good guys to bad guys and clears supicion
+bool clear_suspicion(int current){
+	if (renegade_status == 4 || renegade_status == 7){
+		for(k=1; k<number_of_players; k++){
+			suspicion[k] = 0;
+		}
+	}
+	return player_lineup;
+	return true;
 }
 // role numbers. 1-> sheriff 2->deputy 3->outlaw 4->renegade
 //turn based on circular queue of type player;
