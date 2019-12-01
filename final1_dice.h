@@ -72,10 +72,6 @@ struct stack dice_sheriff_recursive(int current, bool* gatlin, bool* dynamite, i
 					cout << "\nIndians Attack" ;
 					indian_attack(lineup.front, lineup.front);
 				}
-				else {
-					pop(arrows);
-					lineup.data[current].arrows++;
-				}
 			}
 			
 		}
@@ -156,11 +152,8 @@ struct stack dice_deputy_recursive(int current, bool* gatlin, bool* dynamite, in
 			
 			if (dice_roll == 5) { //Arrow
 				if (pull_arrow(current)) {
+					cout << "\nIndians Attack" ;
 					indian_attack(lineup.front, lineup.front);
-				}
-				else {
-					pop(arrows);
-					lineup.data[current].arrows++;
 				}
 			}
 			
@@ -239,11 +232,8 @@ struct stack dice_outlaw_recursive(int current, bool* gatlin, bool* dynamite, in
 			
 			if (dice_roll == 5) { //Arrow
 				if (pull_arrow(current)) {
+					cout << "\nIndians Attack" ;
 					indian_attack(lineup.front, lineup.front);
-				}
-				else {
-					pop(arrows);
-					lineup.data[current].arrows++;
 				}
 			}
 			
@@ -269,34 +259,16 @@ bool save_the_sheriff() {
 }
 
 bool pull_arrow(int current) {
-	if (isEmpty(arrows)) {
-		fill_arrows();
+	if (arrows == 0) {
+		arrows = 9;
 		return (1 == 1);
 	}
 	else {
 		lineup.data[current].arrows++;
+		arrows--;
 		return ( 0 == 1 );
 	}
 } 
-
-void fill_arrows(){
-	for (int i = 0 ; i < 9 ; i++) {
-		push(1,arrows);
-	}
-}
-
-void indian_attack(int current, int start) {
-	for (int i = 0 ; i < lineup.data[current].arrows; i ++) {
-		lineup.data[current].bullets--;
-		if (lineup.data[current].bullets == 0) {
-			//death(lineup.data[current]);
-		}
-	}
-	if (lineup.data[current].next == start) {
-		return;
-	}
-	indian_attack(lineup.data[current].next,start);
-}
 
 void indian_attack(int current, int start) {
 	while (lineup.data[current].arrows > 0) {
