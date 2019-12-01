@@ -175,7 +175,7 @@ void turn(int current){
     lineup.data[current].dice = 5;
 		
         // Announce whose turn it is (Print out info)
-        cout << "Current turn:" << endl;
+        cout << "\nCurrent turn:" << endl;
         print_player(lineup.data[current]);
         
         // Check players role to call the correct dice function
