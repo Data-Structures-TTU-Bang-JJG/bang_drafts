@@ -183,15 +183,13 @@ struct player create_player(int char_num, int role_num) {
 void print_player(struct player var_player) {
     
     // Character's name
-	cout << "\n\nPLAYER: ";
+	cout << "\nPLAYER: ";
 	print_player_name(var_player.name);
 	// If the current player is the sheriff, print it out
-	if (var_player.role == 1)	cout << "\nSHERRIF";
+	if (var_player.role == 1)	cout << " **SHERRIF";
 	
-	//  * * * * * * What is the purpose here * * * * * * 
-	if (var_player.dice) cout << "\nDice: "<<  var_player.dice;
-	if (var_player.hand_size)cout << "\nHand Size: " <<  var_player.hand_size;
-	if (var_player.bullets)cout << "\nBullets: " <<  var_player.bullets;
+	if (var_player.arrows)cout << "  Arrows: " <<  var_player.arrows;
+	if (var_player.bullets)cout << "  Bullets: " <<  var_player.bullets;
 }
 
 void print_player_name(int name_num){
