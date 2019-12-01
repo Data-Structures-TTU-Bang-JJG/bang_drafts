@@ -138,7 +138,7 @@ struct stack dice_deputy_recursive(int current, bool* gatlin, bool* dynamite, in
 			}
 			
 			if (dice_roll == 3) { //Beer 
-				if (save_the_sheriff() || lineup.data[current].bullets < 4) {
+				if ((save_the_sheriff() && lineup.data[0].dead == false)) || lineup.data[current].bullets < 4) {
 					*beer++;
 					lineup.data[current].dice--;
 				}
