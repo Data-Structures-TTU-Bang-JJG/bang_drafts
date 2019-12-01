@@ -19,7 +19,7 @@ struct stack dice_sheriff(int current, bool* gatlin, bool* dynamite, int* beer){
 }
 
 struct stack dice_sheriff_recursive(int current, bool* gatlin, bool* dynamite, int* beer, struct stack* sheriff_shot){
-	int rolled_dynamite_sheriff, rolled_gatlin_sheriff, reroll = 0;
+	int rolled_dynamite_sheriff=0, rolled_gatlin_sheriff=0, reroll = 0;
 	struct stack* dice_stack_sheriff = create_stack();
 	
 	while ( (lineup.data[current].dice  > 0)  && reroll < 3) {
@@ -104,7 +104,7 @@ struct stack dice_deputy(int current, bool* gatlin, bool* dynamite, int* beer){
 }
 
 struct stack dice_deputy_recursive(int current, bool* gatlin, bool* dynamite, int* beer, struct stack* sheriff_shot){
-	int rolled_dynamite_deputy, rolled_gatlin_deputy, reroll=0;
+	int rolled_dynamite_deputy=0, rolled_gatlin_deputy=0, reroll=0;
 	struct stack* dice_stack_deputy = create_stack();
 	
 	while ( (lineup.data[current].dice  > 0) && reroll < 3) {
@@ -190,7 +190,7 @@ struct stack dice_outlaw(int current, bool* gatlin, bool* dynamite, int* beer){
 }
 	
 struct stack dice_outlaw_recursive(int current, bool* gatlin, bool* dynamite, int* beer, struct stack* sheriff_shot){
-	int rolled_dynamite_outlaw, rolled_gatlin_outlaw, reroll = 0;
+	int rolled_dynamite_outlaw=0, rolled_gatlin_outlaw=0, reroll = 0;
 	struct stack* dice_stack_outlaw = create_stack();
 	
 	while ( (lineup.data[current].dice  > 0) && reroll < 3) {

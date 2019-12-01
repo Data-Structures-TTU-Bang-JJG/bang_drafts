@@ -36,19 +36,18 @@ int suspicion[8];
 
 #include "stacks.h"
 //#include "queue.h"
-void death (int current);
-
 #include "player.h"
 
 struct stack* arrows;
 struct player_queue lineup;
 
-#include "dice22.h"
+#include "dice.h"
 
 // Checks if anyone has reached health of 0 or less, changes their status to "dead" if true
 void check_Death(int current, int first);
 // Checks "dead" status and skips these players if they are, also check if any winning
 // condition has happened
+void death (int current);
 // Shoots players within range to the right or left of the current player
 void shooting(struct stack dice_stack,int range, int current);
 // This function checks if sherriff is the only player alive besides the renegade
@@ -63,6 +62,7 @@ void turn(int current);
 void goodGuys_shooting(struct stack dice_stack, int range, int current);
 void badGuys_shooting(struct stack dice_stack, int range, int current);
 bool end_game(int current);
+bool clear_suspicion(int current);
 
 /*{ Library functions table of content 
 stacks.h
@@ -90,7 +90,7 @@ void indian_attack(int current, int start); )*/
 
 int main(int argc, char **argv)
 {
-	//freopen ("myfile.txt","w",stdout);
+	freopen ("myfile.txt","w",stdout);
 	printf ("This sentence is redirected to a file.");
 	// Sets up the system that generates random numbers
 	srand(time(0));
@@ -102,10 +102,9 @@ int main(int argc, char **argv)
 	struct player_queue debugg = lineup;
 	// Create an arrow stack
 	arrows = create_stack();
-	fill_arrows();
 	print_recursive(lineup,lineup.front,lineup.front);
 	//print_recursive(lineup,lineup.front,lineup.front);
-  	turn(lineup.front);
+	turn(lineup.front);
 	//fclose (stdout);
 	print_recursive(lineup,lineup.front,lineup.front);
 	cout << "help";
@@ -146,6 +145,7 @@ void death (int current){
 		else if (lineup.data[current].role == 1) cout << "Sheriff *****\n";
 		else if (lineup.data[current].role == 2) cout << "Outlaw *****\n";
 		else if (lineup.data[current].role == 3) cout << "Renegade *****\n";
+		
 	}
 		// Call end game function to check if any winning condition has happened
 		end_game(lineup.data[current].previous);
@@ -169,18 +169,13 @@ void turn(int current){
     bool dynamite = false;     // Initialize dynamite boolean as false
     int beer = 0;              // Initialize beer int as 0
     
-	if(lineup.data[current].dead == true){
-		death(current);
-		check_Death(current, current, 0);
-		turn(current++); // since we don't know who would still be alive
-	}
 	
     // Reset number of dices to 5 for the current player
     lineup.data[current].dice = 5;
     lineup.data[current].dice = 5;
 		
         // Announce whose turn it is (Print out info)
-		cout << "\nCurrent turn:" << endl;
+        cout << "Current turn:" << endl;
         print_player(lineup.data[current]);
         
         // Check players role to call the correct dice function
@@ -279,6 +274,13 @@ void turn(int current){
 			}
 			// Check if anyone is dead, and change that status if needed
 			check_Death(current, current,0);
+			// Check if only renegades and the sheriff are playing
+		  	while(clear_suspicion(current) == false)
+		    	{
+		   		// If only renegades and sheriff are playing, clear the
+				// suspicion number of the renegades
+				clear_suspicion(current);
+		    	}
 			//Checking if any winning conditions have happened
 			 end_game(current);
 			
@@ -370,7 +372,13 @@ void turn(int current){
 				}
                 // Check if anyone is dead, and change that status if needed
                 check_Death(current, current,0);
-                
+                // Check if only renegades and the sheriff are playing
+		while(clear_suspicion(current) == false)
+		{
+		    	// If only renegades and sheriff are playing, clear the
+			// suspicion number of the renegades
+		    	clear_suspicion(current);
+	        }
                 // Announce the turn has finished
                 cout << "\nThe turn has ended!!!";
             }
@@ -464,6 +472,13 @@ void turn(int current){
 				}
                 // Check if anyone is dead, and change that status if needed
                 check_Death(current, current,0);
+		// Check if only renegades and the sheriff are playing
+		while(clear_suspicion(current) == false)
+	        {
+	         	// If only renegades and sheriff are playing, clear the
+			// suspicion number of the renegades
+		    	clear_suspicion(current);
+	        }
                 // Announce the turn has finished
                 cout << "\nThe turn has ended!!!";
             }
@@ -550,7 +565,13 @@ void turn(int current){
                     }
                     // Check if anyone is dead, and change that status if needed
                     check_Death(current, current,0);
-
+		    // Check if only renegades and the sheriff are playing
+		    while(clear_suspicion(current) == false)
+		    {
+		    	// If only renegades and sheriff are playing, clear the
+			// suspicion number of the renegades
+		    	clear_suspicion(current);
+		    }
                     // Announce the turn has finished
                     cout << "\nThe turn has ended!!!" << endl;
                 }
@@ -639,14 +660,20 @@ void turn(int current){
 					}
 					// Check if anyone is dead, and change that status if needed
 					check_Death(current, current,0);
-					
+					// Check if only renegades and the sheriff are playing
+		                        while(clear_suspicion(current) == false)
+		    			{
+		    				// If only renegades and sheriff are playing, clear the
+						// suspicion number of the renegades
+		    				clear_suspicion(current);
+		    			}
 					// Announce the turn has finished
 					cout << "\nThe turn has ended!!!";
 				}
 			}
 		}
     
-	end_game(current);
+	check_Death(current,current,0);
     // Point to the next player whose turn it is
     turn(lineup.data[current].next);
 	
@@ -676,7 +703,6 @@ void damage_AllPlayers(int current, int first){
 // character's role. This is to check if the sherriff is the only player alive
 int renegade_Attitude(int current, int first, int characterRoleSum){
     // The  value will be equal to the summation of the character's role so far 
-	
 	if (lineup.data[first].dead == true)
 		return 0;
 	
@@ -698,8 +724,6 @@ int renegade_Attitude(int current, int first, int characterRoleSum){
 // the player, they will change the "dead" status
 void check_Death(int current, int first, int count){
     // If the life of the current player is equal or less than 0
-	struct player_queue temp = lineup;
-	
     if(lineup.data[current].bullets <= 0)
     {
         // Change the status of player to "dead"
@@ -714,6 +738,8 @@ void check_Death(int current, int first, int count){
         return;
     }
     
+	end_game(current);
+	
     check_Death(lineup.data[current].next, first, ++count);
 }  // End check_Death
 
@@ -734,6 +760,8 @@ void goodGuys_shooting(struct stack dice_stack, int range, int current){
                 // Shoot the player to the left (-1 health)
                 lineup.data[lineup.data[current].next].bullets--; 
                 cout << "The player to the left was shot!!!" << endl;
+		// Player shot a "bad guy", increase suspicion
+		suspicion[current] = suspicion[current] + 1; 
             }
             
             // Else if the suspicion of the player on the right is lower than 
@@ -743,6 +771,8 @@ void goodGuys_shooting(struct stack dice_stack, int range, int current){
                 // Shoot the player to the right (-1 health)
                 lineup.data[lineup.data[current].previous].bullets--;
                 cout << "The player to the right was shot!!!" << endl;
+		// Player shot a "bad guy", increase suspicion
+		suspicion[current] = suspicion[current] + 1;
             }
         }
         
@@ -756,6 +786,8 @@ void goodGuys_shooting(struct stack dice_stack, int range, int current){
                 // Shoot the player two positions to the left (-1 health)
                 lineup.data[lineup.data[lineup.data[current].next].next].bullets--;
                 cout << "The player two positions to the left was shot!!!" << endl;
+		// Player shot a "bad guy", increase suspicion
+		suspicion[current] = suspicion[current] + 1;
             }
             
             // If the suspicion of the player two spaces to the right is lower than
@@ -765,6 +797,8 @@ void goodGuys_shooting(struct stack dice_stack, int range, int current){
                 // Shoot the player two positions to the right (-1 health)
                 lineup.data[lineup.data[lineup.data[current].previous].previous].bullets--;
                 cout << "The player two positions to the right was shot !!!" << endl;
+		// Player shot a "bad guy", increase suspicion
+		suspicion[current] = suspicion[current] + 1;
             }
         }
         
@@ -775,7 +809,7 @@ void goodGuys_shooting(struct stack dice_stack, int range, int current){
     
     // If the stack is empty then return
     return;
-} // End Shooting
+} // End goodGuys_shooting
 
 // Function used by the "bad guys" to "shoot" the "good guys" within the range specified by the dices
 void badGuys_shooting(struct stack dice_stack, int range, int current){
@@ -793,6 +827,8 @@ void badGuys_shooting(struct stack dice_stack, int range, int current){
                 // Shoot the player to the left (-1 health)
                 lineup.data[lineup.data[current].next].bullets--; 
                 cout << "The player to the left was shot!!!" << endl;
+		// Player shot a "good guy", decrease suspicion
+		suspicion[current] = suspicion[current] - 1;
             }
             
             // Else if the suspicion of the player on the right is higher than 
@@ -802,6 +838,8 @@ void badGuys_shooting(struct stack dice_stack, int range, int current){
                 // Shoot the player to the right (-1 health)
                 lineup.data[lineup.data[current].previous].bullets--;
                 cout << "The player to the right was shot!!!" << endl;
+		// Player shot a "good guy", decrease suspicion
+		suspicion[current] = suspicion[current] - 1;
             }
         }
         
@@ -815,6 +853,8 @@ void badGuys_shooting(struct stack dice_stack, int range, int current){
                 // Shoot the player two positions to the left (-1 health)
                 lineup.data[lineup.data[lineup.data[current].next].next].bullets--;
                 cout << "The player two positions to the left was shot!!!" << endl;
+		// Player shot a "good guy", decrease suspicion
+		suspicion[current] = suspicion[current] - 1;
             }
             
             // If the suspicion of the player two spaces to the right is higher than
@@ -824,6 +864,8 @@ void badGuys_shooting(struct stack dice_stack, int range, int current){
                 // Shoot the player two positions to the right (-1 health)
                 lineup.data[lineup.data[lineup.data[current].previous].previous].bullets--;
                 cout << "The player two positions to the right was shot !!!" << endl;
+		// Player shot a "good guy", decrease suspicion
+		suspicion[current] = suspicion[current] - 1;
             }
         }
         check_Death(lineup.data[current].next,current,0);
@@ -833,7 +875,7 @@ void badGuys_shooting(struct stack dice_stack, int range, int current){
     
     // If the stack is empty then return
     return;
-} // End Shooting
+} // End badGuys_shooting
 
 // Function to "shoot" the players within the range specified by the dices
 void shooting(struct stack dice_stack, int range, int current){
@@ -892,6 +934,16 @@ void shooting(struct stack dice_stack, int range, int current){
     // If the stack is empty then return
     return;
 } // End Shooting
+
+//Check to see if reegades have switched from good guys to bad guys and clears supicion
+bool clear_suspicion(int current){
+	if (renegade_Attitude(current,current,0) == 4 || renegade_Attitude(current,current,0)  == 7){
+		for(int k=1; k<8; k++){
+			suspicion[k] = 0;
+		}
+	}
+	return true;
+}
 
 // NAME: end_game
 // INPUT PARAMETERS: int current (represents the 
