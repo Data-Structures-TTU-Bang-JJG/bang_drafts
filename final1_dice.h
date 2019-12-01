@@ -297,3 +297,22 @@ void indian_attack(int current, int start) {
 	}
 	indian_attack(lineup.data[current].next,start);
 }
+
+void indian_attack(int current, int start) {
+	while (lineup.data[current].arrows > 0) {
+		lineup.data[current].bullets--;
+		lineup.data[current].arrows--;
+	}
+	
+	if (lineup.data[current].bullets == 0) {
+			death(current);
+			if (current == start) {
+				start = lineup.data[current].next;
+			}
+		}
+	
+	if (lineup.data[current].next == start || current == lineup.data[start].previous) {
+		return;
+	}
+	indian_attack(lineup.data[current].next,start);
+}
