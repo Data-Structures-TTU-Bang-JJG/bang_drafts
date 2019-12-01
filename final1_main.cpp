@@ -38,10 +38,8 @@ int suspicion[8];
 //#include "queue.h"
 #include "player.h"
 
-struct stack* arrows;
+int arrows = 9;
 struct player_queue lineup;
-
-#include "dice.h"
 
 // Checks if anyone has reached health of 0 or less, changes their status to "dead" if true
 void check_Death(int current, int first);
@@ -63,6 +61,8 @@ void goodGuys_shooting(struct stack dice_stack, int range, int current);
 void badGuys_shooting(struct stack dice_stack, int range, int current);
 bool end_game(int current);
 bool clear_suspicion(int current);
+
+#include "dice.h"
 
 /*{ Library functions table of content 
 stacks.h
@@ -101,7 +101,6 @@ int main(int argc, char **argv)
 	// Creates a struct for every player in a lineup that holds their relevant info
 	struct player_queue debugg = lineup;
 	// Create an arrow stack
-	arrows = create_stack();
 	print_recursive(lineup,lineup.front,lineup.front);
 	//print_recursive(lineup,lineup.front,lineup.front);
 	turn(lineup.front);
@@ -175,7 +174,7 @@ void turn(int current){
     lineup.data[current].dice = 5;
 		
         // Announce whose turn it is (Print out info)
-        cout << "\nCurrent turn:" << endl;
+        cout << "Current turn:" << endl;
         print_player(lineup.data[current]);
         
         // Check players role to call the correct dice function
@@ -204,13 +203,7 @@ void turn(int current){
 					damage_AllPlayers(lineup.data[current].next, current);
 					cout << "\nYou rolled three Gatlin Guns!!! Shoot everyone once";
 				
-					// Push number of arrows players has back into the stack
-					for(int i = 0; i <= lineup.data[current].arrows; i++)
-					{
-						// Push arrow back into stack
-						push(1, arrows);
-					}
-				
+					arrows = arrows + lineup.data[current].arrows;
 					// Dispose of any arrows character has
 					lineup.data[current].arrows = 0;
 					cout << "\nYour arrows were dropped!!!";
@@ -313,14 +306,9 @@ void turn(int current){
                         damage_AllPlayers(lineup.data[current].next, current);
                         cout << "\nYou rolled three Gatlin Guns!!! Shoot everyone once";
                     
-                        // Push number of arrows players has back into the stack
-                        for(int i = 0; i <= lineup.data[current].arrows; i++)
-                        {
-                            // Push arrow back into stack
-                            push(1, arrows);
-                        }
-                    
-                        // Dispose of any arrows character has
+                        // Put number of arrows players has back into the pile
+                       arrows = arrows + lineup.data[current].arrows;
+					   
                         lineup.data[current].arrows = 0;
                         cout << "\nYour arrows were dropped!!!" ;
 					}
@@ -409,13 +397,8 @@ void turn(int current){
                         damage_AllPlayers(lineup.data[current].next, current);
                         cout << "\nYou rolled three Gatlin Guns!!! Shoot everyone once";
                     
-                        // Push number of arrows players has back into the stack
-                        for(int i = 0; i <= lineup.data[current].arrows; i++)
-                        {
-                            // Push arrow back into stack
-                            push(1, arrows);
-                        }
-                    
+                        // Push number of arrows players has back into the pile
+                        arrows = arrows + lineup.data[current].arrows;
                         // Dispose of any arrows character has
                         lineup.data[current].arrows = 0;
                         cout << "\nYour arrows were dropped!!!";
@@ -517,12 +500,7 @@ void turn(int current){
                             cout << "\nYou rolled three Gatlin Guns!!! Shoot everyone once";
                     
                             // Push number of arrows players has back into the stack
-                            for(int i = 0; i <= lineup.data[current].arrows; i++)
-                            {
-                                // Push arrow back into stack
-                                push(1, arrows);
-                            }
-						
+                            arrows = arrows + lineup.data[current].arrows;
                             // Dispose of any arrows character has
                             lineup.data[current].arrows = 0;
                             cout << "\nYour arrows were dropped!!!";
@@ -602,12 +580,7 @@ void turn(int current){
 							cout << "\nYou rolled three Gatlin Guns!!! Shoot everyone once";
 						
 							// Push number of arrows players has back into the stack
-							for(int i = 0; i <= lineup.data[current].arrows; i++)
-							{
-								// Push arrow back into stack
-								push(1, arrows);
-							}
-						
+							arrows = arrows + lineup.data[current].arrows;
 							// Dispose of any arrows character has
 							lineup.data[current].arrows = 0;
 							cout << "\nYour arrows were dropped!!!" ;
@@ -759,7 +732,8 @@ void goodGuys_shooting(struct stack dice_stack, int range, int current){
             {
                 // Shoot the player to the left (-1 health)
                 lineup.data[lineup.data[current].next].bullets--; 
-                cout << "The player to the left was shot!!!" << endl;
+                print_player_name(lineup.data[lineup.data[current].next].name);
+				cout << " shot!!!" << endl;
 		// Player shot a "bad guy", increase suspicion
 		suspicion[current] = suspicion[current] + 1; 
             }
@@ -770,7 +744,8 @@ void goodGuys_shooting(struct stack dice_stack, int range, int current){
             {
                 // Shoot the player to the right (-1 health)
                 lineup.data[lineup.data[current].previous].bullets--;
-                cout << "The player to the right was shot!!!" << endl;
+                print_player_name(lineup.data[lineup.data[current].previous].name);
+				cout << " was shot!!!" << endl;
 		// Player shot a "bad guy", increase suspicion
 		suspicion[current] = suspicion[current] + 1;
             }
@@ -785,7 +760,8 @@ void goodGuys_shooting(struct stack dice_stack, int range, int current){
             {
                 // Shoot the player two positions to the left (-1 health)
                 lineup.data[lineup.data[lineup.data[current].next].next].bullets--;
-                cout << "The player two positions to the left was shot!!!" << endl;
+                print_player_name(lineup.data[lineup.data[lineup.data[current].next].next].name); 
+				cout << " was shot!!!" << endl;
 		// Player shot a "bad guy", increase suspicion
 		suspicion[current] = suspicion[current] + 1;
             }
@@ -796,7 +772,8 @@ void goodGuys_shooting(struct stack dice_stack, int range, int current){
             {
                 // Shoot the player two positions to the right (-1 health)
                 lineup.data[lineup.data[lineup.data[current].previous].previous].bullets--;
-                cout << "The player two positions to the right was shot !!!" << endl;
+                print_player_name(lineup.data[lineup.data[lineup.data[current].previous].previous].name);
+				cout << " was shot !!!" << endl;
 		// Player shot a "bad guy", increase suspicion
 		suspicion[current] = suspicion[current] + 1;
             }
@@ -826,8 +803,9 @@ void badGuys_shooting(struct stack dice_stack, int range, int current){
             {
                 // Shoot the player to the left (-1 health)
                 lineup.data[lineup.data[current].next].bullets--; 
-                cout << "The player to the left was shot!!!" << endl;
-		// Player shot a "good guy", decrease suspicion
+                print_player_name(lineup.data[lineup.data[current].next].name);
+				cout << " was shot!!!" << endl;
+	        // Player shot a "good guy", decrease suspicion
 		suspicion[current] = suspicion[current] - 1;
             }
             
@@ -837,7 +815,8 @@ void badGuys_shooting(struct stack dice_stack, int range, int current){
             {
                 // Shoot the player to the right (-1 health)
                 lineup.data[lineup.data[current].previous].bullets--;
-                cout << "The player to the right was shot!!!" << endl;
+                print_player_name(lineup.data[lineup.data[current].previous].name);
+				cout << " was shot!!!" << endl;
 		// Player shot a "good guy", decrease suspicion
 		suspicion[current] = suspicion[current] - 1;
             }
@@ -852,7 +831,8 @@ void badGuys_shooting(struct stack dice_stack, int range, int current){
             {
                 // Shoot the player two positions to the left (-1 health)
                 lineup.data[lineup.data[lineup.data[current].next].next].bullets--;
-                cout << "The player two positions to the left was shot!!!" << endl;
+                print_player_name(lineup.data[lineup.data[lineup.data[current].next].next].name);
+				cout << " was shot!!!" << endl;
 		// Player shot a "good guy", decrease suspicion
 		suspicion[current] = suspicion[current] - 1;
             }
@@ -863,9 +843,10 @@ void badGuys_shooting(struct stack dice_stack, int range, int current){
             {
                 // Shoot the player two positions to the right (-1 health)
                 lineup.data[lineup.data[lineup.data[current].previous].previous].bullets--;
-                cout << "The player two positions to the right was shot !!!" << endl;
+                print_player_name(lineup.data[lineup.data[lineup.data[current].previous].previous].name);
+				cout << " was shot !!!" << endl;
 		// Player shot a "good guy", decrease suspicion
-		suspicion[current] = suspicion[current] - 1;
+	        suspicion[current] = suspicion[current] - 1;
             }
         }
         check_Death(lineup.data[current].next,current,0);
@@ -894,7 +875,8 @@ void shooting(struct stack dice_stack, int range, int current){
             {
                 // Shoot the player to the left (-1 health)
                 lineup.data[lineup.data[current].next].bullets--; 
-                cout << "The player to the left was shot!!!" << endl;
+                print_player_name(lineup.data[lineup.data[current].next].name); 
+				cout << " was shot!!!" << endl;
             }
             
             // If position is 2
@@ -902,7 +884,8 @@ void shooting(struct stack dice_stack, int range, int current){
             {
                 // Shoot the player to the right (-1 health)
                 lineup.data[lineup.data[current].previous].bullets--;
-                cout << "The player to the right was shot!!!" << endl;
+                print_player_name(lineup.data[lineup.data[current].previous].name);
+				cout << " was shot!!!" << endl;
             }
         }
         
@@ -915,7 +898,8 @@ void shooting(struct stack dice_stack, int range, int current){
             {
                 // Shoot the player two positions to the left (-1 health)
                 lineup.data[lineup.data[lineup.data[current].next].next].bullets--;
-                cout << "The player two positions to the left was shot!!!" << endl;
+                print_player_name(lineup.data[lineup.data[lineup.data[current].next].next].name);
+				cout << " was shot!!!" << endl;
             }
             
             // if position is 2
@@ -923,7 +907,8 @@ void shooting(struct stack dice_stack, int range, int current){
             {
                 // Shoot the player two positions to the right (-1 health)
                 lineup.data[lineup.data[lineup.data[current].previous].previous].bullets--;
-                cout << "The player two positions to the right was shot !!!" << endl;
+                print_player_name(lineup.data[lineup.data[lineup.data[current].previous].previous].name);
+				cout  << " was shot !!!" << endl;
             }
         }
         
@@ -963,7 +948,7 @@ bool end_game(int current){
 		exit(0);
 	}
 	// If the current player is an outlaw, and the current player is the only player left
-	else if(lineup.data[current].role == 2 && lineup.data[current].next == current &&  (living_status <= 0))  {
+	else if(lineup.data[current].role == 2 && lineup.data[current].next == current  ||  (living_status <= 0))  {
 		 // Print out that the outlaws have won
 		cout << "Outlaws win\n\n";
 		//fclose (stdout);
