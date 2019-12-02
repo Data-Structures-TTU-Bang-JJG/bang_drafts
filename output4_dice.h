@@ -61,14 +61,14 @@ stack dice_sheriff_recursive(int current, bool* gatlin, bool* dynamite, int* bee
 	int rolled_dynamite_sheriff=0, rolled_gatlin_sheriff=0, reroll = 1;
 	stack* dice_stack_sheriff = create_stack();
 	
-	cout<< "dice " << lineup.data[current].dice;
-	while ( (lineup.data[current].dice  > 0)  && reroll < 4 && *dynamite == false) {
+	int dice = lineup.data[current].dice;
+	while ( (dice  > 0)  && reroll < 4 && *dynamite == false) {
 		cout << "\nRoll " << reroll << ": ";
 		while(!isEmpty(dice_stack_sheriff)) {
 			pop(dice_stack_sheriff);
 		}
-		
-		for(int i=0;i<lineup.data[current].dice;i++) {
+		dice = lineup.data[current].dice;
+		for(int i=0;i<dice;i++) {
 			int dice_roll=rand()%6;
 			
 			print_dice(dice_roll);
@@ -156,15 +156,15 @@ stack dice_deputy_recursive(int current, bool* gatlin, bool* dynamite, int* beer
 	int rolled_dynamite_deputy=0, rolled_gatlin_deputy=0, reroll=1;
 	stack* dice_stack_deputy = create_stack();
 	
-		cout<< "dice " << lineup.data[current].dice;
+		int dice = lineup.data[current].dice;
 	
-	while ( (lineup.data[current].dice  > 0) && reroll < 4 && *dynamite == false) {
+	while ( (dice  > 0) && reroll < 4 && *dynamite == false) {
 		cout << "\nRoll " << reroll << ": ";
 		while(!isEmpty(dice_stack_deputy)) {
 			pop(dice_stack_deputy);
 		}
-		
-		for(int i=0;i<lineup.data[current].dice;i++) {
+		dice = lineup.data[current].dice;
+		for(int i=0;i<dice;i++) {
 			int dice_roll=rand()%6;
 			
 			print_dice(dice_roll);
@@ -251,14 +251,15 @@ stack dice_outlaw_recursive(int current, bool* gatlin, bool* dynamite, int* beer
 	int rolled_dynamite_outlaw=0, rolled_gatlin_outlaw=0, reroll = 1;
 	stack* dice_stack_outlaw = create_stack();
 	
-		cout<< "dice " << lineup.data[current].dice;
+	int dice = lineup.data[current].dice;
 	
-	while ( (lineup.data[current].dice  > 0) && reroll < 4 && *dynamite == false) {
+	while ( (dice  > 0) && reroll < 4 && *dynamite == false) {
 		while(!isEmpty(dice_stack_outlaw)) {
 			pop(dice_stack_outlaw);
 		}
 		cout << "\nRoll " << reroll << ": ";
-		for(int i=0;i<lineup.data[current].dice;i++) {
+		dice = lineup.data[current].dice;
+		for(int i=0;i<dice;i++) {
 			int dice_roll=rand()%6;
 			
 			print_dice(dice_roll);
