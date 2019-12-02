@@ -1,0 +1,117 @@
+This sentence is redirected to a file.//////// Top of the lineup /////////
+//////// [ D ] is Dynimite /////////
+//////// [ G ] is Gatlin /////////
+//////// [ B ] is Beer /////////
+//////// [ A ] is Arrow /////////
+//////// [ 1 ] is shooting one to the left or to the right /////////
+//////// [ 2 ] is shooting two to the left or to the right /////////
+ 
+
+*SHERRIF: Vulture Sam   Bullets: 6
+PLAYER: Paul Regret  Bullets: 3
+PLAYER: Lucky Duke  Bullets: 4
+PLAYER: Kit Carlson  Bullets: 4
+PLAYER: Willy the Kid  Bullets: 4
+PLAYER: Bart Cassidy  Bullets: 4
+PLAYER: Black Jack  Bullets: 4
+PLAYER: Calamity Janet  Bullets: 4
+
+NEW TURN
+ 
+
+*SHERRIF: Vulture Sam   Bullets: 6
+Roll 1: [ A ]  [ 2 ]  [ 2 ]  [ A ]  [ D ]  <#
+Roll 2: [ 1 ]  [ B ]  [ D ]  <#[ G ]  
+Roll 3: [ B ]  <#[ 1 ]  [ G ]  
+Final Dice: [ G ]  [ D ]  [ D ]  [ B ]  [ 1 ]  
+	You have 1 beers!!! Your life now, bullets: 6
+*Calamity Janet was shot! Bullets: 3
+	You have 2 arrows!!!
+	No one was shot!!!
+	The turn has ended!!!
+
+NEW TURN
+
+PLAYER: Paul Regret  Bullets: 3
+Roll 1: [ 2 ]  [ G ]  [ A ]  [ 2 ]  [ B ]  
+Roll 2: [ B ]  [ A ]  [ D ]  [ G ]  [ B ]  
+Roll 3: [ G ]  [ B ]  <#[ 2 ]  [ 1 ]  <#
+Final Dice: [ G ]  [ D ]  [ B ]  [ 2 ]  [ 1 ]  
+	You have 1 beers!!! Your life now, bullets: 3
+*Vulture Sam  was shot! Bullets: 5
+*Calamity Janet was shot! Bullets: 2
+	You now have 2 arrows!!!
+	The turn has ended!!!
+
+NEW TURN
+
+PLAYER: Lucky Duke  Bullets: 4
+Roll 1: [ A ]  [ G ]  [ D ]  [ 2 ]  <#[ A ]  
+Roll 2: [ A ]  [ D ]  [ G ]  
+Roll 3: [ 2 ]  <#[ B ]  <#
+Final Dice: [ D ]  [ D ]  [ B ]  [ 2 ]  [ 2 ]  
+	You have 1 beers!!! Your life now, bullets: 4
+*Vulture Sam  was shot! Bullets: 4
+*Vulture Sam  was shot! Bullets: 3
+	You now have 3 arrows!!!
+	The turn has ended!!!
+
+NEW TURN
+
+PLAYER: Kit Carlson  Bullets: 4
+Roll 1: [ D ]  <#[ 1 ]  [ D ]  <#[ 2 ]  [ A ]  
+Roll 2: [ D ]  <#
+	You rolled three dynamites!!! You lost one life point
+	The turn has ended!!!
+
+NEW TURN
+
+PLAYER: Willy the Kid  Bullets: 4
+Roll 1: [ 1 ]  [ D ]  <#[ D ]  <#[ D ]  <#[ 1 ]  
+	You rolled three dynamites!!! You lost one life point
+	The turn has ended!!!
+
+NEW TURN
+
+PLAYER: Bart Cassidy  Bullets: 4
+Roll 1: [ A ]  [ 2 ]  [ 2 ]  [ G ]  [ 2 ]  
+Roll 2: [ B ]  <#[ B ]  <#[ D ]  <#[ A ]  
+Indians Attack
+Vulture Sam  was hit for 2
+Paul Regret was hit for 2
+Lucky Duke was hit for 3
+Kit Carlson was hit for 1
+Bart Cassidy was hit for 1[ A ]  
+Roll 3: [ A ]  [ D ]  <#
+Final Dice: [ D ]  [ D ]  [ B ]  [ B ]  
+	+1 bullet for the Sheriff
+	+1 bullet for the Sheriff
+	You have 0 beers!!! Your life now, bullets: 5
+	No one was shot!!!
+	You got 2 arrows!!!
+The turn has ended!!!
+
+NEW TURN
+
+PLAYER: Black Jack  Bullets: 4
+Roll 1: [ G ]  [ 1 ]  [ D ]  [ 1 ]  [ 2 ]  <#
+Roll 2: [ 2 ]  <#[ A ]  [ A ]  
+Roll 3: [ 2 ]  <#[ 1 ]  
+Final Dice: [ D ]  [ 1 ]  [ 2 ]  [ 2 ]  [ 2 ]  
+	You don't have any beer!!!
+*Vulture Sam  was shot! Bullets: 0
+
+****Vulture Sam  has DIED *******
+****ROLE: Sheriff *****
+
+OUTLAW: Calamity Janet  Bullets: 2
+OUTLAW: Paul Regret  Bullets: 1
+OUTLAW: Lucky Duke  Bullets: 1
+RENEGADE: Kit Carlson  Bullets: 2
+RENEGADE: Willy the Kid  Bullets: 3
+DEPUTY: Bart Cassidy  Arrows: 2  Bullets: 5
+OUTLAW: Black Jack  Arrows: 2  Bullets: 4
+OUTLAW: Calamity Janet  Bullets: 2
+
+Outlaws win
+
