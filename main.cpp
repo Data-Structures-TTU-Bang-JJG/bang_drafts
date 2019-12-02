@@ -95,7 +95,8 @@ int main(int argc, char **argv)
 	// Sets up the system that generates random numbers
 	srand(time(0));
 	// Randomizes the number of players from 4 to 8
-	int players = (rand()%5+4);
+	//int players = (rand()%5+4);
+	int players = 8;
 	// Creates the lineup of players
 	lineup = create_line_up(players);
 	//print_recursive(lineup,lineup.front,lineup.front);
@@ -166,6 +167,13 @@ void turn(int current){
     int beer = 0;              // Initialize beer int as 0
     
 	if (current == 0 && lineup.data[0].dead == false) {
+		cout << "//////// Top of the lineup /////////" << endl;
+		cout << "//////// [ D ] is Dynimite /////////" << endl;
+		cout << "//////// [ G ] is Gatlin /////////" << endl;
+		cout << "//////// [ B ] is Beer /////////" << endl;
+		cout << "//////// [ A ] is Arrow /////////" << endl;
+		cout << "//////// [ 1 ] is shooting one to the left or to the right /////////" << endl;
+		cout << "//////// [ 2 ] is shooting two to the left or to the right /////////" << endl;
 		print_recursive(lineup,current,current,false);
 	}
     // Reset number of dices to 5 for the current player
@@ -250,7 +258,7 @@ void turn(int current){
 				if(isEmpty(&dice_stack) == false)
 				{
 					// Call shooting function
-					shooting(dice_stack,pop(&dice_stack), current);
+					goodGuys_shooting(dice_stack,pop(&dice_stack), current);
 				}
 				
 				else
@@ -863,7 +871,7 @@ void badGuys_shooting(stack dice_stack, int range, int current){
 } // End badGuys_shooting
 
 // Function to "shoot" the players within the range specified by the dices
-void shooting(stack dice_stack, int range, int current){
+/*void shooting(stack dice_stack, int range, int current){
     while(isEmpty(&dice_stack) == false)
     {
 		 // Randomize an integer between 1 or 2
@@ -926,7 +934,7 @@ void shooting(stack dice_stack, int range, int current){
     
     // If the stack is empty then return
     return;
-} // End Shooting
+} // End Shooting */
 
 //Check to see if reegades have switched from good guys to bad guys and clears supicion
 bool clear_suspicion(int current){
@@ -954,14 +962,6 @@ void print_playerend(struct player var_player) {
 
 // character's info one by one 
 void print_endgame (struct player_queue line_up,int current, int first, bool loop) {
-    
-    // Calls the print_player function to print out the character's relevant info 
-	if (line_up.data[current].dead == false)
-		print_playerend(line_up.data[current]);
-	
-	while(line_up.data[first].dead == true) {
-		first = line_up.data[first].next;
-	}
 	// If the next character is the first one that was printed out then return
 	if (current == first) {
 		if (loop == false) {
@@ -969,7 +969,13 @@ void print_endgame (struct player_queue line_up,int current, int first, bool loo
 		}
 		else return;
 	}
+    // Calls the print_player function to print out the character's relevant info 
+	if (line_up.data[current].dead == false)
+		print_playerend(line_up.data[current]);
 	
+	while(line_up.data[first].dead == true) {
+		first = line_up.data[first].next;
+	}
 	
 	// Call this function recursively by pointing to the next character 
 	print_endgame(line_up,line_up.data[current].next,first,loop);
