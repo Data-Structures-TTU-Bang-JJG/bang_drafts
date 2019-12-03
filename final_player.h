@@ -1,19 +1,22 @@
 // Grace Gomez
 // 11/3/2019
 // Comments by Jose Sosa
+// Library with functions to create a circular queue of player structs
 #include<time.h> 
+
+// MAX is defined in main at 20
 
 // Structure that holds players info
 struct  player {
 	int name;             // In the print function there is a switch case that prints their name based on this number 1 - 16
-	int role;             // 1 is Sherrif, 0 is Deputy, 3 is Outlaw, 4 is Renegade 
+	int role;             // 1 is Sherrif, 0 is Deputy, 2 is Outlaw, 3 is Renegade 
 	int dice;             // This is rollable dice and is initalized as 5 at the beginning of each turn
 	int hand_size;        // The largest number of bullets that an individual can have (Max Health)
 	int bullets;          // life points. The amount you start the game with is your maximum hand size --> hand_size. cannot exceed at the end of the turn.
-	int arrows;
+	int arrows;           // The number of arrows the player has
 	int next;             // the next array element in the circular queue values between 0 and 7
-	int previous;
-	bool dead;
+	int previous;         // the previous element in the cicular queue values between 0 and 7
+	bool dead;            // true or false if the player is dead. initialized as false
 };
 
 // Queue that tells who's turn it is, who is next, and who was the one before
@@ -23,7 +26,6 @@ struct player_queue{
     int rear;                 // Pointer to the ending of the queue array 
 };
 
-// * * * * * * Where is Max of array defined? * * * * * * * 
 struct player_queue create_player_queue();                         //to create a queue in another function call using { struct queuec* [the name of your queue] = create_queuec }
 bool isEmpty_player_queue (struct player_queue varq);              // Function that checks if the player_queue is empty
 bool isFull_player_queue (struct player_queue varq);               // Function that checks if the player_queue is full
@@ -142,7 +144,7 @@ struct player create_player(int char_num, int role_num) {
     
     // Structure to create a temporary character player 
 	struct player temp_player;
-	//temp_player.name=(char*)malloc(20,sizeof(char));
+
 	// Assign the name of the character 
 	temp_player.name = char_num;
 	
@@ -166,7 +168,7 @@ struct player create_player(int char_num, int role_num) {
 	// Assign the role to the character (sheriff, deputy, renegade, and outlaw)
 	temp_player.role = role_num;
 	// Assign number of dices the character has 
-	temp_player.dice = 6;
+	temp_player.dice = 5;
 	// Assign number of arrow the character has
 	temp_player.arrows = 0;
 	// Assign Max Health of the character 
@@ -324,51 +326,63 @@ struct player_queue create_line_up(int number_of_players) {
 	    // Call shuffle_array to shuffle the char_num_arr
 		shuffle_array(char_num_arr,16);
 		
-	// Create a stack that hold the roles characters can take
+	// Create array that hold the roles characters can take
 	// (Sherrif, deputy, outlaw, and renegade)
 	int roles_array[number_of_players-1], a=0;
 	for (int i = 0; i < ((number_of_players/3)+1); i ++) {
 		roles_array[a++] = 2;
 	}
 	
-	// insert one renegade for 4-7 and 2 for 8clTabCtrl
+	// insert one renegade for 4-7 and 2 for 8
 	roles_array[a++] = 3;
 	if (number_of_players == 8) {
 		roles_array[a++] = 3;
 	}
 	
-	
+	// inserts none for 4 2 for 5 - 7 and 3 for 8 
 	int deputy = ((number_of_players-3)/2);
 	for (int j = 0; j < deputy ; j++) {
 		roles_array[a++] = 0;
 	}
+	
+	// shuffles the array of roles w/o sheriff so that the roles are in a random order in the queue
 	shuffle_array(roles_array,number_of_players-1);
+	
+	// creates a new array for character roles that will also include sheriff
 	int character_roles[number_of_players];
 	character_roles[0] = 1;
 	for (int j = 1; j < number_of_players ; j++) {
 		character_roles[j] = roles_array[j-1];
 	}
+	
+	creates the player queue
 	struct player_queue player_lineup = create_player_queue();
 	player_lineup.front = 0;
+	
 	struct player_queue* ptr_player_lineup = &player_lineup;
+	
+	// inserts the players with their randomly assigned names and roles
 	for( k = 0; k < number_of_players; k++) {
 		ptr_player_lineup->data[k] = create_player(char_num_arr[k],character_roles[k]);
 		//enqueue_player(ptr_player_lineup,temp_player);
+		// makes the circular queue with player structures next and previous index intergers assigned to the correct values
 		ptr_player_lineup->data[k].next = k+1;
 		ptr_player_lineup->data[k].previous = k-1;
 	}
+	// assigns indexing interger for the last next and first previous to be their respective values
 	player_lineup.rear = k-1;
 	player_lineup.data[player_lineup.front].previous = k-1;
 	player_lineup.data[player_lineup.rear].next = 0; 
 	
 	
 	// Adding elements to the suspicion array
+	// the sheriff, since their role is know, is 1000 which is effectively infinity and is always assumed good
 	suspicion[0] = 1000;
+	
+	// all other characters start off at zero, as a character gets more negative they are assumed to be more outlaw and visa versa
 	for( k = 1; k < number_of_players; k++) {
 		suspicion[k] = 0;
 	}
 	
 	return player_lineup;
 }
-// role numbers. 1-> sheriff 2->deputy 3->outlaw 4->renegade
-//turn based on circular queue of type player;
