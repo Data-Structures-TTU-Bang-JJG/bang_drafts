@@ -8,61 +8,86 @@ bool save_the_sheriff();
 bool pull_arrow(int current);
 void indian_attack(int current, int start);
 
+
+// The print dice function prints the corresponding dice element with an integer
 void print_dice(int dice){
+	
+	// Prints D for Dynimite
 	if (dice == 0) {
 		cout << "[ D ]  ";
 	}
+	// Prints 1 for a 1 bullseye
 	else if (dice == 1) {
 		cout << "[ 1 ]  ";
 	}
+	// Prints 2 for a 2 bullseye
 	else if (dice == 2) {
 		cout << "[ 2 ]  ";
 	}
+	// Prints B for Beer
 	else if (dice == 3) {
 		cout << "[ B ]  ";
 	}
+	// Prints G for Gatlin
 	else if (dice == 4) {
 		cout << "[ G ]  ";
 	}
+	// Prints A for Arrow
 	else if (dice == 5) {
 		cout << "[ A ]  ";
 	}
 }
 
+//Print final dice prints the number of beer, Gatlin and dynamite a player has at the end of their turn
 void print_final_dice(int gatlin, int dynamite, int beer) {
 	cout << "\nFinal Dice: ";
+	// Prints G for every Gatlin
 	for(int i=0 ; i < gatlin ; i++){
 		cout << "[ G ]  ";
 	}
+	// Prints D for every Dynamite
 	for(int i=0 ; i < dynamite ; i++){
 		cout << "[ D ]  ";
 	}
+	// Prints B for every Beer
 	for(int i=0 ; i < beer ; i++){
 		cout << "[ B ]  ";
 	}
 }
 
+// Roll dice as a sheriff
 stack dice_sheriff(int current, bool* gatlin, bool* dynamite, int* beer){
+	
+	// creates a stack for shot they want to take meaning a character in that index has a suspision of -3
 	stack* sheriff_shot= create_stack();
+	
+	// returns a stack from dice_recursive sheriff which will also return the bool pointer gatlin and dynimite and the int pointer beer
 	stack final_shot = dice_sheriff_recursive(current, gatlin, dynamite, beer, sheriff_shot);
 	stack temp = final_shot;
+	
+	// prints out the shot dice returned in dice_sheriff_recursive to be output for the final roll
 	while(!isEmpty(&temp)) {
 		cout << "[ " << peek(&temp) << " ]  ";
 		pop(&temp);
 	}
+	
+	// combines the sheriff_shot and final_shot functions
 	while(!isEmpty(sheriff_shot)) {
 		cout << "[ " << peek(sheriff_shot) << " ]  ";
 		push(pop(sheriff_shot),&final_shot);
 	}
+	
+	// returns all shot dice in the final roll
 	return final_shot;
 }
 
 stack dice_sheriff_recursive(int current, bool* gatlin, bool* dynamite, int* beer, stack* sheriff_shot){
 	int rolled_dynamite_sheriff=0, rolled_gatlin_sheriff=0, reroll = 1;
 	bool rolled_two = false;
-	stack* dice_stack_sheriff = create_stack();
 	
-	int dice = lineup.data[current].dice;
+	// creates dice stack that will be returned
+	stack* dice_stack_sheriff = create_stack();
+	// while the character has rerolls, dice and has not rolled three of more dynamites they reroll
 	while ( (dice  > 0)  && reroll < 4 && *dynamite == false) {
 		cout << "\nRoll " << reroll << ": ";
 		while(!isEmpty(dice_stack_sheriff)) {
